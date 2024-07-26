@@ -1,0 +1,46 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  /* text-align: center; */
+}
+
+.inputs input {
+  width: 3rem;
+}
+
+/* #results {
+  display: none;
+}
+
+#main-input {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+#dollar {
+  position: absolute;
+  left: -3rem;
+  top: -0.5rem;
+}
+
+input#money {
+  padding: 0.98rem 2rem;
+  padding-right: 6rem;
+  font-size: 2rem;
+  text-align: right;
+  border: none;
+  border-top: 0.5rem solid rgba(5, 5, 5, 1);
+  border-bottom: 0.5rem solid rgba(5, 5, 5, 1);
+}
+
+#calculate {
+  position: absolute;
+  right: -3.2rem;
+  top: -0.61rem;
+}
+
+input#money:focus {
+  outline: none;
+} */
