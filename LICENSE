@@ -1,0 +1,31 @@
+Open Contribution License (OCL)
+
+Version 1.0, July 2024
+
+Terms and Conditions
+Definitions:
+
+"Software": Refers to the code, documentation, and other associated files in this project.
+"Licensor": Steven Woodward, the original author(s) or entity granting the license.
+"Contributor": Any individual submitting code, documentation, or other contributions to the Software.
+"User": Any individual viewing, creating issues, or contributing to the Software.
+Grant of License:
+
+Permission is hereby granted, free of charge, to any User to view, create issues, and contribute to the Software, subject to the following conditions:
+Users may view and analyze the code.
+Users may create issues in the issue tracker.
+Users may submit contributions to the Software in the form of pull requests or patches.
+Restrictions:
+
+The Software, including any portion thereof, may not be copied, redistributed, or used for any commercial purposes without explicit permission from the Licensor.
+Users are not allowed to distribute or sublicense the Software, modified or unmodified, in any form.
+Users are not allowed to create derivative works for commercial purposes.
+Monetary Control:
+
+The Licensor retains all rights to monetize the Software. This includes, but is not limited to, selling licenses, offering the Software as a service, or incorporating the Software into other commercial products.
+Attribution:
+
+Contributions must retain the original copyright notice, this list of conditions, and the following disclaimer.
+Disclaimer:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
