@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { GrMoney, GrClose } from 'react-icons/gr';
+import { GrMoney, GrClose, GrAdd } from 'react-icons/gr';
+import { FaPercent } from 'react-icons/fa6';
+import { TbLockDollar } from 'react-icons/tb';
+import { CgRename } from 'react-icons/cg';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import { FaTimes } from 'react-icons/fa';
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -17,8 +22,8 @@ function App() {
   const [customJars, setCustomJars] = useState([]);
 
   const validateDecimal = (value) => {
-    const regex = /^\d+(\.\d{0,2})?$/;
-    return regex.test(value);
+    const pattern = /^\d*(\.\d{0,2})?$/;
+    return pattern.test(value);
   };
 
   const handleChange = (event) => {
@@ -32,25 +37,49 @@ function App() {
     }
   };
 
+  // const handleDeductionChange = (index, event) => {
+  //   const { name, value } = event.target;
+
+  //   if (validateDecimal(value)) {
+  //     setDeductions((prevDeductions) =>
+  //       prevDeductions.map((deduction, i) =>
+  //         i === index
+  //           ? {
+  //               ...deduction,
+  //               [name]: parseFloat(value) || value,
+  //             }
+  //           : deduction
+  //       )
+  //     );
+  //   }
+  // };
+
   const handleDeductionChange = (index, event) => {
-    const { name, value, type } = event.target;
+    const { name, value } = event.target;
+
+    if (validateDecimal(value)) {
+      setDeductions((prevDeductions) =>
+        prevDeductions.map((deduction, i) =>
+          i === index
+            ? {
+                ...deduction,
+                [name]: parseFloat(value),
+              }
+            : deduction
+        )
+      );
+    }
+  };
+
+  const handleDeductionTypeToggle = (index) => {
     setDeductions((prevDeductions) =>
       prevDeductions.map((deduction, i) =>
         i === index
           ? {
               ...deduction,
-              [name]: type === 'radio' ? value : parseFloat(value) || value,
+              type: deduction.type === 'fixed' ? 'percentage' : 'fixed',
             }
           : deduction
-      )
-    );
-  };
-
-  const handleDeductionTypeChange = (index, event) => {
-    const { value } = event.target;
-    setDeductions((prevDeductions) =>
-      prevDeductions.map((deduction, i) =>
-        i === index ? { ...deduction, type: value } : deduction
       )
     );
   };
@@ -180,14 +209,14 @@ function App() {
   }, [totalDeductions, inputs.initialAmount]);
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto px-4 md:px-0'>
       {/* NAV */}
       <nav className='navbar rounded-full'>
         <div className='flex-none'>
           <GrMoney />
         </div>
         <div className='flex-1'>
-          <h1 className='text-xl'>&nbsp;Six Jars Money</h1>
+          <h1 className='text-xl'>&nbsp;MoneyGro.</h1>
         </div>
         <div className='flex-none'>
           <label className='swap swap-rotate'>
@@ -218,16 +247,6 @@ function App() {
       </nav>
 
       <div className='container flex flex-col items-center mt-12'>
-        {/* <input
-          type='number'
-          name='initialAmount'
-          id='initialAmount'
-          value={inputs.initialAmount}
-          placeholder='How much was your paycheck?'
-          onChange={handleChange}
-          className='input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full shadow-2xl focus:shadow-2xl'
-        /> */}
-
         <label className='relative block w-full max-w-lg'>
           <input
             type='number'
@@ -246,24 +265,11 @@ function App() {
           </span>
         </label>
 
-        {/* <label className='relative block w-full max-w-lg'>
-          <input
-            type='text'
-            name='search'
-            id='search'
-            className='block w-full px-4 py-2 pr-10 text-gray-700 bg-white border border-gray-300 rounded-full shadow-2xl focus:outline-none focus:border-blue-500 focus:shadow-outline-blue focus:ring-1 focus:ring-blue-500'
-            placeholder='How much was your paycheck?'
-          />
-          <span className='absolute inset-y-0 right-0 flex items-center pr-3'>
-            <GrClose className='w-5 h-5 text-gray-400' />
-          </span>
-        </label> */}
-
         {/* USER DEDUCTIONS */}
-        <div className='mt-12'>
+        <div className='mt-16'>
           {deductions.map((deduction, index) => (
             <div key={index}>
-              <label>
+              {/* <label>
                 {deduction.name}:
                 <input
                   type='number'
@@ -271,45 +277,132 @@ function App() {
                   value={deduction.value}
                   onChange={(event) => handleDeductionChange(index, event)}
                 />
-              </label>
-              <div>
-                {/* RADIO BUTTONS */}
-                <label>
+              </label> */}
+              <div className='flex flex-row items-center mt-4'>
+                <div
+                  className={`${inputs.initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
+                >
+                  <button
+                    className='btn btn-circle btn-sm btn-outline btn-secondary tooltip'
+                    data-tip='Rename Deduction'
+                    onClick={() => renameDeduction(index)}
+                    disabled={inputs.initialAmount <= 0}
+                  >
+                    <CgRename
+                      className='ml-[0.35rem] mt-[0.075rem]'
+                      size='1.2rem'
+                    />
+                  </button>
+                </div>
+                <label className='input input-bordered input-sm input-secondary rounded-full w-full flex items-center gap-2 px-4 ml-4'>
+                  {deduction.name}:
                   <input
-                    type='radio'
-                    name={`type-${index}`}
-                    value='fixed'
-                    checked={deduction.type === 'fixed'}
-                    onChange={(event) =>
-                      handleDeductionTypeChange(index, event)
-                    }
-                    // defaultChecked
+                    type='number'
+                    name='value'
+                    value={deduction.value}
+                    className='grow'
+                    placeholder='0'
+                    onChange={(event) => handleDeductionChange(index, event)}
+                    disabled={inputs.initialAmount <= 0}
                   />
-                  Fixed Amount
-                </label>
-                <label>
-                  <input
-                    type='radio'
-                    name={`type-${index}`}
-                    value='percentage'
-                    checked={deduction.type === 'percentage'}
-                    onChange={(event) =>
-                      handleDeductionTypeChange(index, event)
-                    }
-                  />
-                  Percentage
+                  <span>
+                    {deduction.type === 'fixed' ? (
+                      <TbLockDollar />
+                    ) : (
+                      <FaPercent />
+                    )}
+                  </span>
                 </label>
               </div>
-              <button type='button' onClick={() => renameDeduction(index)}>
-                Rename
-              </button>
-              <button type='button' onClick={() => removeDeductionField(index)}>
-                Remove
-              </button>
+
+              {/* FIXED-PERCENTAGE TOGGLE */}
+              <div className='flex flex-row items-center justify-between'>
+                <div className='flex flex-row items-center mt-4 mb-2'>
+                  <span
+                    className='tooltip'
+                    data-tip={
+                      inputs.initialAmount <= 0
+                        ? null
+                        : 'Fixed Amount Deduction'
+                    }
+                  >
+                    <TbLockDollar
+                      className={`${
+                        deduction.type === 'fixed'
+                          ? `${
+                              inputs.initialAmount <= 0
+                                ? 'text-secondary opacity-50 hover:cursor-not-allowed'
+                                : 'text-primary'
+                            }`
+                          : inputs.initialAmount <= 0
+                            ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
+                            : 'text-secondary dark:opacity-50 hover:cursor-pointer'
+                      } duration-200`}
+                      onClick={
+                        deduction.type === 'fixed'
+                          ? null
+                          : inputs.initialAmount <= 0
+                            ? null
+                            : () => handleDeductionTypeToggle(index)
+                      }
+                      size='1.2rem'
+                    />
+                  </span>
+                  <input
+                    type='checkbox'
+                    className='toggle toggle-secondary ml-4 rounded-full custom-toggle-duration'
+                    checked={deduction.type === 'percentage'}
+                    onChange={() => handleDeductionTypeToggle(index)}
+                    disabled={inputs.initialAmount <= 0}
+                  />
+                  <span
+                    className='tooltip ml-4'
+                    data-tip={
+                      inputs.initialAmount <= 0 ? null : 'Percentage Deduction'
+                    }
+                  >
+                    <FaPercent
+                      className={`${
+                        deduction.type === 'fixed'
+                          ? `${
+                              inputs.initialAmount <= 0
+                                ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
+                                : 'text-secondary dark:opacity-50 hover:cursor-pointer'
+                            }`
+                          : inputs.initialAmount <= 0
+                            ? 'text-secondary opacity-50 hover:cursor-not-allowed'
+                            : 'text-primary'
+                      } duration-200`}
+                      onClick={
+                        deduction.type === 'fixed'
+                          ? inputs.initialAmount <= 0
+                            ? null
+                            : () => handleDeductionTypeToggle(index)
+                          : null
+                      }
+                    />
+                  </span>
+                </div>
+                <button
+                  type='button'
+                  className='btn btn-circle btn-xs btn-outline btn-error mt-2 tooltip'
+                  data-tip='Remove Deduction'
+                  onClick={() => removeDeductionField(index)}
+                >
+                  <FaTimes className='ml-[0.3rem]' />
+                </button>
+              </div>
             </div>
           ))}
-          <button type='button' onClick={addDeductionField}>
-            + Add Deduction
+          {/* ADD DEDUCTION BUTTON */}
+          <button
+            className='input border-none rounded-full flex items-center gap-2 opacity-85 hover:cursor-pointer hover:opacity-100 hover:outline-none active:outline-none focus:outline-none active:opacity-100 focus:opacity-100'
+            onClick={addDeductionField}
+          >
+            <span className='btn btn-primary btn-circle btn-active btn-xs text-white light:text-slate-800'>
+              <GrAdd />
+            </span>
+            <span className='grow'>Add a Deduction</span>
           </button>
 
           {/* ITEMIZED DEDUCTIONS */}
