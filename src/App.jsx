@@ -257,7 +257,10 @@ function App() {
             onChange={handleChange}
             className='input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full shadow-2xl focus:shadow-2xl'
           />
-          <span className='absolute inset-y-0 right-0 flex items-center mr-8'>
+          <span
+            className='absolute inset-y-0 right-0 flex items-center mr-8 tooltip tooltip-right'
+            data-tip='Clear Salary'
+          >
             <GrClose
               className='w-5 h-5 text-gray-400 hover:cursor-pointer hover:text-secondary'
               onClick={handleResetClick}
@@ -268,8 +271,20 @@ function App() {
         {/* USER DEDUCTIONS */}
         <div className='mt-16'>
           {deductions.map((deduction, index) => (
-            <div key={index}>
-              {/* <label>
+            // <div
+            //   key={index}
+            //   className='deductions mb-4 border p-4 rounded-lg border-slate-500 max-w-[390px]'
+            // >
+            <div
+              key={index}
+              className='collapse collapse-arrow border rounded-3xl mb-2 p-1'
+            >
+              <input type='checkbox' className='peer' />
+              <div className='collapse-title bg-transparent peer-checked:border-b-0'>
+                {deduction.name}
+              </div>
+              <div className='collapse-content bg-transparent'>
+                {/* <label>
                 {deduction.name}:
                 <input
                   type='number'
@@ -278,119 +293,122 @@ function App() {
                   onChange={(event) => handleDeductionChange(index, event)}
                 />
               </label> */}
-              <div className='flex flex-row items-center mt-4'>
-                <div
-                  className={`${inputs.initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
-                >
-                  <button
-                    className='btn btn-circle btn-sm btn-outline btn-secondary tooltip'
-                    data-tip='Rename Deduction'
-                    onClick={() => renameDeduction(index)}
-                    disabled={inputs.initialAmount <= 0}
+                <div className='flex flex-row items-center'>
+                  <div
+                    className={`${inputs.initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
                   >
-                    <CgRename
-                      className='ml-[0.35rem] mt-[0.075rem]'
-                      size='1.2rem'
+                    <button
+                      className='btn btn-circle btn-sm btn-outline btn-secondary tooltip tooltip-right'
+                      data-tip='Rename Deduction'
+                      onClick={() => renameDeduction(index)}
+                      disabled={inputs.initialAmount <= 0}
+                    >
+                      <CgRename
+                        className='ml-[0.35rem] mt-[0.075rem]'
+                        size='1.2rem'
+                      />
+                    </button>
+                  </div>
+                  <label className='input input-bordered input-sm input-secondary rounded-full w-full flex items-center gap-2 px-4 ml-4'>
+                    {deduction.name}:
+                    <input
+                      type='number'
+                      name='value'
+                      value={deduction.value}
+                      className='grow'
+                      placeholder='0'
+                      onChange={(event) => handleDeductionChange(index, event)}
+                      disabled={inputs.initialAmount <= 0}
                     />
+                    <span>
+                      {deduction.type === 'fixed' ? (
+                        <TbLockDollar />
+                      ) : (
+                        <FaPercent />
+                      )}
+                    </span>
+                  </label>
+                </div>
+
+                {/* FIXED-PERCENTAGE TOGGLE */}
+                <div className='flex flex-row items-center justify-between'>
+                  <div className='flex flex-row items-center mt-4 mb-2'>
+                    <span
+                      className='tooltip tooltip-right'
+                      data-tip={
+                        inputs.initialAmount <= 0
+                          ? null
+                          : 'Fixed Amount Deduction'
+                      }
+                    >
+                      <TbLockDollar
+                        className={`${
+                          deduction.type === 'fixed'
+                            ? `${
+                                inputs.initialAmount <= 0
+                                  ? 'text-secondary opacity-50 hover:cursor-not-allowed'
+                                  : 'text-primary'
+                              }`
+                            : inputs.initialAmount <= 0
+                              ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
+                              : 'text-secondary dark:opacity-50 hover:cursor-pointer'
+                        } duration-200`}
+                        onClick={
+                          deduction.type === 'fixed'
+                            ? null
+                            : inputs.initialAmount <= 0
+                              ? null
+                              : () => handleDeductionTypeToggle(index)
+                        }
+                        size='1.2rem'
+                      />
+                    </span>
+                    <input
+                      type='checkbox'
+                      className='toggle toggle-secondary ml-4 rounded-full custom-toggle-duration'
+                      checked={deduction.type === 'percentage'}
+                      onChange={() => handleDeductionTypeToggle(index)}
+                      disabled={inputs.initialAmount <= 0}
+                    />
+                    <span
+                      className='tooltip tooltip-right ml-4'
+                      data-tip={
+                        inputs.initialAmount <= 0
+                          ? null
+                          : 'Percentage Deduction'
+                      }
+                    >
+                      <FaPercent
+                        className={`${
+                          deduction.type === 'fixed'
+                            ? `${
+                                inputs.initialAmount <= 0
+                                  ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
+                                  : 'text-secondary dark:opacity-50 hover:cursor-pointer'
+                              }`
+                            : inputs.initialAmount <= 0
+                              ? 'text-secondary opacity-50 hover:cursor-not-allowed'
+                              : 'text-primary'
+                        } duration-200`}
+                        onClick={
+                          deduction.type === 'fixed'
+                            ? inputs.initialAmount <= 0
+                              ? null
+                              : () => handleDeductionTypeToggle(index)
+                            : null
+                        }
+                      />
+                    </span>
+                  </div>
+                  <button
+                    type='button'
+                    className='btn btn-circle btn-xs btn-outline btn-error mt-2 tooltip tooltip-left'
+                    data-tip='Remove Deduction'
+                    onClick={() => removeDeductionField(index)}
+                  >
+                    <FaTimes className='ml-[0.3rem]' />
                   </button>
                 </div>
-                <label className='input input-bordered input-sm input-secondary rounded-full w-full flex items-center gap-2 px-4 ml-4'>
-                  {deduction.name}:
-                  <input
-                    type='number'
-                    name='value'
-                    value={deduction.value}
-                    className='grow'
-                    placeholder='0'
-                    onChange={(event) => handleDeductionChange(index, event)}
-                    disabled={inputs.initialAmount <= 0}
-                  />
-                  <span>
-                    {deduction.type === 'fixed' ? (
-                      <TbLockDollar />
-                    ) : (
-                      <FaPercent />
-                    )}
-                  </span>
-                </label>
-              </div>
-
-              {/* FIXED-PERCENTAGE TOGGLE */}
-              <div className='flex flex-row items-center justify-between'>
-                <div className='flex flex-row items-center mt-4 mb-2'>
-                  <span
-                    className='tooltip'
-                    data-tip={
-                      inputs.initialAmount <= 0
-                        ? null
-                        : 'Fixed Amount Deduction'
-                    }
-                  >
-                    <TbLockDollar
-                      className={`${
-                        deduction.type === 'fixed'
-                          ? `${
-                              inputs.initialAmount <= 0
-                                ? 'text-secondary opacity-50 hover:cursor-not-allowed'
-                                : 'text-primary'
-                            }`
-                          : inputs.initialAmount <= 0
-                            ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
-                            : 'text-secondary dark:opacity-50 hover:cursor-pointer'
-                      } duration-200`}
-                      onClick={
-                        deduction.type === 'fixed'
-                          ? null
-                          : inputs.initialAmount <= 0
-                            ? null
-                            : () => handleDeductionTypeToggle(index)
-                      }
-                      size='1.2rem'
-                    />
-                  </span>
-                  <input
-                    type='checkbox'
-                    className='toggle toggle-secondary ml-4 rounded-full custom-toggle-duration'
-                    checked={deduction.type === 'percentage'}
-                    onChange={() => handleDeductionTypeToggle(index)}
-                    disabled={inputs.initialAmount <= 0}
-                  />
-                  <span
-                    className='tooltip ml-4'
-                    data-tip={
-                      inputs.initialAmount <= 0 ? null : 'Percentage Deduction'
-                    }
-                  >
-                    <FaPercent
-                      className={`${
-                        deduction.type === 'fixed'
-                          ? `${
-                              inputs.initialAmount <= 0
-                                ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
-                                : 'text-secondary dark:opacity-50 hover:cursor-pointer'
-                            }`
-                          : inputs.initialAmount <= 0
-                            ? 'text-secondary opacity-50 hover:cursor-not-allowed'
-                            : 'text-primary'
-                      } duration-200`}
-                      onClick={
-                        deduction.type === 'fixed'
-                          ? inputs.initialAmount <= 0
-                            ? null
-                            : () => handleDeductionTypeToggle(index)
-                          : null
-                      }
-                    />
-                  </span>
-                </div>
-                <button
-                  type='button'
-                  className='btn btn-circle btn-xs btn-outline btn-error mt-2 tooltip'
-                  data-tip='Remove Deduction'
-                  onClick={() => removeDeductionField(index)}
-                >
-                  <FaTimes className='ml-[0.3rem]' />
-                </button>
               </div>
             </div>
           ))}

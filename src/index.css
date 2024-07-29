@@ -15,3 +15,13 @@
 .custom-toggle-duration {
   --animation-input: 0.2s !important;
 }
+
+/* .deductions:not(:first-child) {
+  border-top: 1px solid #5973ac;
+}
+
+.deductions {
+  padding: 1rem;
+  border: 1px solid #5973ac;
+  border-radius: 15px;
+} */
