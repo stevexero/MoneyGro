@@ -3,8 +3,8 @@ import { GrMoney, GrClose, GrAdd } from 'react-icons/gr';
 import { FaPercent } from 'react-icons/fa6';
 import { TbLockDollar } from 'react-icons/tb';
 import { CgRename } from 'react-icons/cg';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import { FaTimes } from 'react-icons/fa';
+// import { FiInfo } from 'react-icons/fi';
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -26,14 +26,35 @@ function App() {
     return pattern.test(value);
   };
 
+  const validatePercentage = (value) => {
+    const pattern = /^\d{0,2}$/;
+    return pattern.test(value);
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    if (validateDecimal(value)) {
-      setInputs({
-        ...inputs,
-        [name]: parseFloat(value) || value,
-      });
+    // if (validateDecimal(value)) {
+    //   setInputs({
+    //     ...inputs,
+    //     [name]: parseFloat(value) || value,
+    //   });
+    // }
+
+    if (name === 'initialAmount') {
+      if (validateDecimal(value)) {
+        setInputs({
+          ...inputs,
+          [name]: parseFloat(value) || value,
+        });
+      }
+    } else {
+      if (validatePercentage(value)) {
+        setInputs({
+          ...inputs,
+          [name]: parseFloat(value) || value,
+        });
+      }
     }
   };
 
@@ -269,7 +290,7 @@ function App() {
         </label>
 
         {/* USER DEDUCTIONS */}
-        <div className='mt-16'>
+        <div className='mt-16 w-full flex flex-col items-center'>
           {deductions.map((deduction, index) => (
             // <div
             //   key={index}
@@ -277,9 +298,9 @@ function App() {
             // >
             <div
               key={index}
-              className='collapse collapse-arrow border rounded-3xl mb-2 p-1'
+              className='collapse collapse-arrow border rounded-3xl mb-2 p-0 px-2 max-w-sm'
             >
-              <input type='checkbox' className='peer' />
+              <input type='checkbox' className='peer' defaultChecked />
               <div className='collapse-title bg-transparent peer-checked:border-b-0'>
                 {deduction.name}
               </div>
@@ -413,41 +434,183 @@ function App() {
             </div>
           ))}
           {/* ADD DEDUCTION BUTTON */}
-          <button
-            className='input border-none rounded-full flex items-center gap-2 opacity-85 hover:cursor-pointer hover:opacity-100 hover:outline-none active:outline-none focus:outline-none active:opacity-100 focus:opacity-100'
-            onClick={addDeductionField}
-          >
-            <span className='btn btn-primary btn-circle btn-active btn-xs text-white light:text-slate-800'>
-              <GrAdd />
-            </span>
-            <span className='grow'>Add a Deduction</span>
-          </button>
+          <div className='w-full flex items-center justify-center'>
+            <div className='w-full max-w-sm'>
+              <button
+                className='input border-none rounded-full flex items-center gap-2 opacity-85 hover:cursor-pointer hover:opacity-100 hover:outline-none active:outline-none focus:outline-none active:opacity-100 focus:opacity-100'
+                onClick={addDeductionField}
+              >
+                <span className='btn btn-primary btn-circle btn-active btn-xs text-white light:text-slate-800'>
+                  <GrAdd />
+                </span>
+                <span className='grow'>Add a Deduction</span>
+              </button>
+            </div>
+          </div>
 
           {/* ITEMIZED DEDUCTIONS */}
-          {deductions.length > 0 && (
-            <div>
-              <p>Itemized Deductions:</p>
-              <ul>
-                {deductions.map((deduction, index) => {
-                  const deductionAmount =
-                    deduction.type === 'percentage'
-                      ? (inputs.initialAmount * deduction.value) / 100
-                      : deduction.value || 0;
-                  return (
-                    <li key={index}>
-                      {deduction.name}: ${deductionAmount.toFixed(2)}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p>Total Deductions: ${totalDeductions.toFixed(2)}</p>
-              <p>Distributable Amount: ${distributableAmount.toFixed(2)}</p>
+          {deductions && deductions.length > 0 && (
+            <div className='border rounded-3xl mb-2 p-6 mt-4 w-full max-w-sm'>
+              {deductions.length > 0 && (
+                <div>
+                  <h3 className='font-bold text-lg'>Itemized Deductions:</h3>
+                  <ul>
+                    {deductions.map((deduction, index) => {
+                      const deductionAmount =
+                        deduction.type === 'percentage'
+                          ? (inputs.initialAmount * deduction.value) / 100
+                          : deduction.value || 0;
+                      return (
+                        <li
+                          key={index}
+                          className='list-disc list-inside text-sm font-semibold ml-6 mt-2 first:mt-4'
+                        >
+                          {deduction.name}:{' '}
+                          <span className='font-light'>$</span>
+                          <span className='font-normal text-secondary'>
+                            {deductionAmount.toFixed(2)}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <p className='mt-4 font-semibold'>
+                    Total Deductions: <span className='font-light'>$</span>
+                    <span className='font-normal text-secondary'>
+                      {totalDeductions.toFixed(2)}
+                    </span>
+                  </p>
+                  <p className='mt-4 font-semibold'>
+                    Distributable Amount: <span className='font-light'>$</span>
+                    <span className='font-normal text-secondary'>
+                      {distributableAmount.toFixed(2)}
+                    </span>
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
           {/* SIX JARS */}
-          <div className='inputs'>
+          <div className='container w-full max-w-lg grid grid-cols-2 gap-4 mt-8 lg:max-w-2xl lg:grid-cols-3'>
+            <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <h2 className='card-title'>Financial Freedom</h2>
+                <div className='w-full flex justify-center items-center'>
+                  <input
+                    type='number'
+                    className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                    name='financialFreedom'
+                    id='financialFreedom'
+                    value={inputs.financialFreedom}
+                    onChange={handleChange}
+                    min={0}
+                    max={99}
+                  />
+                  <FaPercent size='2rem' />
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+
+            <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <h2 className='card-title'>Long Term Savings</h2>
+                <div className='w-full flex justify-center items-center'>
+                  <input
+                    type='number'
+                    className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                    name='longTermSavingsForSpending'
+                    id='longTermSavingsForSpending'
+                    value={inputs.longTermSavingsForSpending}
+                    onChange={handleChange}
+                    min={0}
+                    max={99}
+                  />
+                  <FaPercent size='2rem' />
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+
+            <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <h2 className='card-title'>Giving</h2>
+                <div className='w-full flex justify-center items-center'>
+                  <input
+                    type='number'
+                    className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                    name='giving'
+                    id='giving'
+                    value={inputs.giving}
+                    onChange={handleChange}
+                    min={0}
+                    max={99}
+                  />
+                  <FaPercent size='2rem' />
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+
+            <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <h2 className='card-title'>Education</h2>
+                <div className='w-full flex justify-center items-center'>
+                  <input
+                    type='number'
+                    className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                    name='education'
+                    id='education'
+                    value={inputs.education}
+                    onChange={handleChange}
+                    min={0}
+                    max={99}
+                  />
+                  <FaPercent size='2rem' />
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+
+            <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <h2 className='card-title'>Play</h2>
+                <div className='w-full flex justify-center items-center'>
+                  <input
+                    type='number'
+                    className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                    name='play'
+                    id='play'
+                    value={inputs.play}
+                    onChange={handleChange}
+                    min={0}
+                    max={99}
+                  />
+                  <FaPercent size='2rem' />
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+
+            <div className='card card-compact bg-primary text-neutral-content rounded-xl'>
+              <div className='card-body'>
+                <div className='w-full flex justify-center items-center mt-4'>
+                  <button
+                    className='btn btn-circle btn-lg btn-outline tooltip'
+                    data-tip='Add a Custom Jar'
+                  >
+                    <GrAdd size='2rem' className='ml-[0.95rem]' />
+                  </button>
+                </div>
+                <div className='card-actions justify-end'></div>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className='mt-8'>
             <input
+              className='input input-bordered input-secondary w-full max-w-16'
               type='number'
               name='longTermSavingsForSpending'
               id='longTermSavingsForSpending'
@@ -536,7 +699,7 @@ function App() {
                 (inputs.play * 0.01)
               ).toFixed(2)}
             </span>
-          </div>
+          </div> */}
 
           {/* CUSTOM JARS */}
           {customJars.map((jar, index) => (
@@ -566,8 +729,17 @@ function App() {
               </button>
             </div>
           ))}
-          <button type='button' onClick={addCustomJarField}>
+          {/* <button type='button' onClick={addCustomJarField}>
             + Add Custom Jar
+          </button> */}
+          <button
+            className='input border-none rounded-full flex items-center gap-2 opacity-85 hover:cursor-pointer hover:opacity-100 hover:outline-none active:outline-none focus:outline-none active:opacity-100 focus:opacity-100'
+            onClick={addCustomJarField}
+          >
+            <span className='btn btn-primary btn-circle btn-active btn-xs text-white light:text-slate-800'>
+              <GrAdd />
+            </span>
+            <span className='grow'>Add Custom Jar</span>
           </button>
 
           {/* NECESSITIES */}
