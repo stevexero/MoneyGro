@@ -15,9 +15,3 @@
 .custom-toggle-duration {
   --animation-input: 0.2s !important;
 }
-
-/* .card-input:focus,
-.card-input:active {
-  outline: none;
-  border: none;
-} */
