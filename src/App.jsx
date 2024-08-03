@@ -509,7 +509,15 @@ function App() {
                   />
                   <FaPercent size='2rem' />
                 </div>
-                <div className='card-actions justify-end'></div>
+                <div className='card-actions justify-end'>
+                  <div>
+                    $&nbsp;
+                    {(
+                      (inputs.initialAmount - totalDeductions) *
+                      (inputs.financialFreedom * 0.01)
+                    ).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -529,7 +537,15 @@ function App() {
                   />
                   <FaPercent size='2rem' />
                 </div>
-                <div className='card-actions justify-end'></div>
+                <div className='card-actions justify-end'>
+                  <div>
+                    $&nbsp;
+                    {(
+                      (inputs.initialAmount - totalDeductions) *
+                      (inputs.longTermSavingsForSpending * 0.01)
+                    ).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -549,7 +565,15 @@ function App() {
                   />
                   <FaPercent size='2rem' />
                 </div>
-                <div className='card-actions justify-end'></div>
+                <div className='card-actions justify-end'>
+                  <div>
+                    $&nbsp;
+                    {(
+                      (inputs.initialAmount - totalDeductions) *
+                      (inputs.giving * 0.01)
+                    ).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -569,7 +593,15 @@ function App() {
                   />
                   <FaPercent size='2rem' />
                 </div>
-                <div className='card-actions justify-end'></div>
+                <div className='card-actions justify-end'>
+                  <div>
+                    $&nbsp;
+                    {(
+                      (inputs.initialAmount - totalDeductions) *
+                      (inputs.education * 0.01)
+                    ).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -589,7 +621,15 @@ function App() {
                   />
                   <FaPercent size='2rem' />
                 </div>
-                <div className='card-actions justify-end'></div>
+                <div className='card-actions justify-end'>
+                  <div>
+                    $&nbsp;
+                    {(
+                      (inputs.initialAmount - totalDeductions) *
+                      (inputs.play * 0.01)
+                    ).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -597,8 +637,8 @@ function App() {
               <div className='card-body'>
                 <div className='w-full flex justify-center items-center mt-4'>
                   <button
-                    className='btn btn-circle btn-lg btn-outline tooltip'
-                    data-tip='Add a Custom Jar'
+                    className='btn btn-circle btn-lg btn-outline tooltip mt-2'
+                    data-tip='Add a Custom Jar (Feature coming soon)'
                   >
                     <GrAdd size='2rem' className='ml-[0.95rem]' />
                   </button>
@@ -607,6 +647,8 @@ function App() {
               </div>
             </div>
           </div>
+
+          {/* TO BE DELETED */}
 
           {/* <div className='mt-8'>
             <input
@@ -732,7 +774,8 @@ function App() {
           {/* <button type='button' onClick={addCustomJarField}>
             + Add Custom Jar
           </button> */}
-          <button
+
+          {/* <button
             className='input border-none rounded-full flex items-center gap-2 opacity-85 hover:cursor-pointer hover:opacity-100 hover:outline-none active:outline-none focus:outline-none active:opacity-100 focus:opacity-100'
             onClick={addCustomJarField}
           >
@@ -740,17 +783,23 @@ function App() {
               <GrAdd />
             </span>
             <span className='grow'>Add Custom Jar</span>
-          </button>
+          </button> */}
 
           {/* NECESSITIES */}
-          <div>
-            {necessities}
-            %&nbsp;-&nbsp;Necessities:&nbsp;
-            {(
-              necessities *
-              (inputs.initialAmount - totalDeductions) *
-              0.01
-            ).toFixed(2)}
+          <div className='card bg-neutral text-neutral-content rounded-xl mt-6 mb-16 w-full max-w-2xl'>
+            <div className='card-body w-full flex justify-center items-center '>
+              <h2 className='card-title'>
+                {necessities}% - Leftover for Necessities
+              </h2>
+              <div className='font-bold text-4xl mt-4'>
+                $&nbsp;
+                {(
+                  necessities *
+                  (inputs.initialAmount - totalDeductions) *
+                  0.01
+                ).toFixed(2)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
