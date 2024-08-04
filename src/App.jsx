@@ -230,7 +230,7 @@ function App() {
   }, [totalDeductions, inputs.initialAmount]);
 
   return (
-    <div className='container mx-auto px-4 md:px-0'>
+    <div className='container mx-auto px-4 md:px-0 overflow-x-hidden'>
       {/* NAV */}
       <nav className='navbar rounded-full'>
         <div className='flex-none'>
@@ -298,7 +298,7 @@ function App() {
             // >
             <div
               key={index}
-              className='collapse collapse-arrow border rounded-3xl mb-2 p-0 px-2 max-w-sm'
+              className='collapse collapse-arrow border rounded-3xl mb-2 p-0 max-w-sm'
             >
               <input type='checkbox' className='peer' defaultChecked />
               <div className='collapse-title bg-transparent peer-checked:border-b-0'>

@@ -15,3 +15,7 @@
 .custom-toggle-duration {
   --animation-input: 0.2s !important;
 }
+
+.collapse-title: {
+  position: static;
+}
