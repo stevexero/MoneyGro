@@ -336,7 +336,7 @@ function App() {
                       type='number'
                       name='value'
                       value={deduction.value}
-                      className='grow'
+                      className='grow w-full'
                       placeholder='0'
                       onChange={(event) => handleDeductionChange(index, event)}
                       disabled={inputs.initialAmount <= 0}
