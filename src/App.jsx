@@ -4,7 +4,6 @@ import { FaPercent } from 'react-icons/fa6';
 import { TbLockDollar } from 'react-icons/tb';
 import { CgRename } from 'react-icons/cg';
 import { FaTimes } from 'react-icons/fa';
-// import { FiInfo } from 'react-icons/fi';
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -633,18 +632,64 @@ function App() {
               </div>
             </div>
 
-            <div className='card card-compact bg-primary text-neutral-content rounded-xl'>
-              <div className='card-body'>
-                <div className='w-full flex justify-center items-center mt-4'>
-                  <button
-                    className='btn btn-circle btn-lg btn-outline tooltip mt-2'
-                    data-tip='Add a Custom Jar (Feature coming soon)'
-                  >
-                    <GrAdd size='2rem' className='ml-[0.95rem]' />
-                  </button>
+            {customJars.map((jar, index) => (
+              <div
+                key={index}
+                className='inputs card card-compact bg-neutral text-neutral-content rounded-xl'
+              >
+                <div className='card-body'>
+                  <h2 className='card-title'>{jar.name}</h2>
+                  <div className='w-full flex justify-center items-center'>
+                    <input
+                      type='number'
+                      name='value'
+                      className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+                      value={jar.value}
+                      onChange={(event) => handleCustomJarChange(index, event)}
+                      min={0}
+                    />
+                    <FaPercent size='2rem' />
+                  </div>
+                  <div className='card-actions w-full flex flex-row justify-between items-center'>
+                    <div>
+                      <button
+                        className='btn btn-circle btn-xs btn-outline btn-primary tooltip tooltip-right'
+                        data-tip='Rename Custom Jar'
+                        onClick={() => renameCustomJar(index)}
+                      >
+                        <CgRename
+                          className='ml-[0.1rem] mt-[0.075rem]'
+                          size='1.1rem'
+                        />
+                      </button>
+                      <button
+                        className='btn btn-circle btn-xs btn-outline btn-error tooltip tooltip-top ml-2'
+                        data-tip='Remove Custom Jar'
+                        onClick={() => removeCustomJarField(index)}
+                      >
+                        <GrClose className='ml-[0.3rem]' />
+                      </button>
+                    </div>
+                    <div>
+                      $&nbsp;
+                      {(
+                        (inputs.initialAmount - totalDeductions) *
+                        (jar.value * 0.01)
+                      ).toFixed(2)}
+                    </div>
+                  </div>
                 </div>
-                <div className='card-actions justify-end'></div>
               </div>
+            ))}
+
+            <div className='card card-compact bg-transparent card-bordered border-neutral text-neutral-content rounded-xl flex items-center justify-center min-h-[156px]'>
+              <button
+                className='btn btn-circle btn-lg btn-primary tooltip'
+                data-tip='Add a Custom Jar'
+                onClick={addCustomJarField}
+              >
+                <GrAdd size='2rem' className='ml-[0.95rem]' />
+              </button>
             </div>
           </div>
 
@@ -744,7 +789,7 @@ function App() {
           </div> */}
 
           {/* CUSTOM JARS */}
-          {customJars.map((jar, index) => (
+          {/* {customJars.map((jar, index) => (
             <div key={index} className='inputs'>
               <input
                 type='number'
@@ -770,7 +815,7 @@ function App() {
                 Remove
               </button>
             </div>
-          ))}
+          ))} */}
           {/* <button type='button' onClick={addCustomJarField}>
             + Add Custom Jar
           </button> */}
@@ -786,7 +831,7 @@ function App() {
           </button> */}
 
           {/* NECESSITIES */}
-          <div className='card bg-neutral text-neutral-content rounded-xl mt-6 mb-16 w-full max-w-2xl'>
+          <div className='card bg-neutral text-neutral-content rounded-xl mt-6 mb-16 w-full max-w-lg p-4 lg:max-w-2xl'>
             <div className='card-body w-full flex justify-center items-center '>
               <h2 className='card-title'>
                 {necessities}% - Leftover for Necessities
