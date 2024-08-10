@@ -4,11 +4,15 @@ import { FaPercent } from 'react-icons/fa6';
 import { TbLockDollar } from 'react-icons/tb';
 import { CgRename } from 'react-icons/cg';
 import { FaTimes } from 'react-icons/fa';
+import useInputsStore from './store';
 import Navbar from './components/Navbar';
+import AnimatedInput from './components/AnimatedInput';
 
 function App() {
+  const initialAmount = useInputsStore((state) => state.initialAmount);
+
   const [inputs, setInputs] = useState({
-    initialAmount: '',
+    // initialAmount: '',
     dreams: 10,
     freedom: 10,
     knowledge: 10,
@@ -180,12 +184,12 @@ function App() {
     }
   };
 
-  const handleResetClick = () => {
-    setInputs((prevInputs) => ({
-      ...prevInputs,
-      initialAmount: '',
-    }));
-  };
+  // const handleResetClick = () => {
+  //   setInputs((prevInputs) => ({
+  //     ...prevInputs,
+  //     initialAmount: '',
+  //   }));
+  // };
 
   useEffect(() => {
     setTotalDeductions(
@@ -194,12 +198,14 @@ function App() {
         return (
           acc +
           (curr.type === 'percentage'
-            ? (inputs.initialAmount * deductionValue) / 100
+            ? // ? (inputs.initialAmount * deductionValue) / 100
+              (initialAmount * deductionValue) / 100
             : deductionValue)
         );
       }, 0)
     );
-  }, [deductions, inputs.initialAmount]);
+    // }, [deductions, inputs.initialAmount]);
+  }, [deductions, initialAmount]);
 
   useEffect(() => {
     setNecessities(
@@ -224,22 +230,28 @@ function App() {
   ]);
 
   useEffect(() => {
-    const initialAmount = parseFloat(inputs.initialAmount || 0);
-    const amountLeftAfterDeductions = initialAmount - totalDeductions;
+    // const initialAmount = parseFloat(inputs.initialAmount || 0);
+    // const initialAmount = parseFloat(initialAmount || 0);
+    const initialAmt = parseFloat(initialAmount || 0);
+    // const amountLeftAfterDeductions = initialAmount - totalDeductions;
+    const amountLeftAfterDeductions = initialAmt - totalDeductions;
     setDistributableAmount(amountLeftAfterDeductions);
-  }, [totalDeductions, inputs.initialAmount]);
+    // }, [totalDeductions, inputs.initialAmount]);
+  }, [totalDeductions, initialAmount]);
 
   return (
     <div className='container mx-auto px-4 md:px-0 overflow-x-hidden'>
       <Navbar />
       <div className='container flex flex-col items-center mt-12'>
-        <label className='relative block w-full max-w-lg'>
+        <AnimatedInput />
+        {/* <label className='relative block w-full max-w-lg'>
           <input
             type='number'
             name='initialAmount'
             id='initialAmount'
             value={inputs.initialAmount}
             placeholder='How much was your paycheck?'
+            // placeholder={displayedText}
             onChange={handleChange}
             className='input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full shadow-2xl focus:shadow-2xl'
           />
@@ -252,7 +264,7 @@ function App() {
               onClick={handleResetClick}
             />
           </span>
-        </label>
+        </label> */}
 
         {/* USER DEDUCTIONS */}
         <div className='mt-16 w-full flex flex-col items-center'>
@@ -281,13 +293,15 @@ function App() {
               </label> */}
                 <div className='flex flex-row items-center'>
                   <div
-                    className={`${inputs.initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
+                    // className={`${inputs.initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
+                    className={`${initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
                   >
                     <button
                       className='btn btn-circle btn-sm btn-outline btn-secondary tooltip tooltip-right'
                       data-tip='Rename Deduction'
                       onClick={() => renameDeduction(index)}
-                      disabled={inputs.initialAmount <= 0}
+                      // disabled={inputs.initialAmount <= 0}
+                      disabled={initialAmount <= 0}
                     >
                       <CgRename
                         className='ml-[0.35rem] mt-[0.075rem]'
@@ -304,7 +318,8 @@ function App() {
                       className='grow w-full'
                       placeholder='0'
                       onChange={(event) => handleDeductionChange(index, event)}
-                      disabled={inputs.initialAmount <= 0}
+                      // disabled={inputs.initialAmount <= 0}
+                      disabled={initialAmount <= 0}
                     />
                     <span>
                       {deduction.type === 'fixed' ? (
@@ -322,27 +337,29 @@ function App() {
                     <span
                       className='tooltip tooltip-right'
                       data-tip={
-                        inputs.initialAmount <= 0
-                          ? null
-                          : 'Fixed Amount Deduction'
+                        // inputs.initialAmount <= 0
+                        initialAmount <= 0 ? null : 'Fixed Amount Deduction'
                       }
                     >
                       <TbLockDollar
                         className={`${
                           deduction.type === 'fixed'
                             ? `${
-                                inputs.initialAmount <= 0
+                                // inputs.initialAmount <= 0
+                                initialAmount <= 0
                                   ? 'text-secondary opacity-50 hover:cursor-not-allowed'
                                   : 'text-primary'
                               }`
-                            : inputs.initialAmount <= 0
+                            : // : inputs.initialAmount <= 0
+                              initialAmount <= 0
                               ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
                               : 'text-secondary dark:opacity-50 hover:cursor-pointer'
                         } duration-200`}
                         onClick={
                           deduction.type === 'fixed'
                             ? null
-                            : inputs.initialAmount <= 0
+                            : // : inputs.initialAmount <= 0
+                              initialAmount <= 0
                               ? null
                               : () => handleDeductionTypeToggle(index)
                         }
@@ -354,31 +371,34 @@ function App() {
                       className='toggle toggle-secondary ml-4 rounded-full custom-toggle-duration'
                       checked={deduction.type === 'percentage'}
                       onChange={() => handleDeductionTypeToggle(index)}
-                      disabled={inputs.initialAmount <= 0}
+                      // disabled={inputs.initialAmount <= 0}
+                      disabled={initialAmount <= 0}
                     />
                     <span
                       className='tooltip tooltip-right ml-4'
                       data-tip={
-                        inputs.initialAmount <= 0
-                          ? null
-                          : 'Percentage Deduction'
+                        // inputs.initialAmount <= 0
+                        initialAmount <= 0 ? null : 'Percentage Deduction'
                       }
                     >
                       <FaPercent
                         className={`${
                           deduction.type === 'fixed'
                             ? `${
-                                inputs.initialAmount <= 0
+                                // inputs.initialAmount <= 0
+                                initialAmount <= 0
                                   ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
                                   : 'text-secondary dark:opacity-50 hover:cursor-pointer'
                               }`
-                            : inputs.initialAmount <= 0
+                            : // : inputs.initialAmount <= 0
+                              initialAmount <= 0
                               ? 'text-secondary opacity-50 hover:cursor-not-allowed'
                               : 'text-primary'
                         } duration-200`}
                         onClick={
                           deduction.type === 'fixed'
-                            ? inputs.initialAmount <= 0
+                            ? // ? inputs.initialAmount <= 0
+                              initialAmount <= 0
                               ? null
                               : () => handleDeductionTypeToggle(index)
                             : null
@@ -423,7 +443,8 @@ function App() {
                     {deductions.map((deduction, index) => {
                       const deductionAmount =
                         deduction.type === 'percentage'
-                          ? (inputs.initialAmount * deduction.value) / 100
+                          ? // ? (inputs.initialAmount * deduction.value) / 100
+                            (initialAmount * deduction.value) / 100
                           : deduction.value || 0;
                       return (
                         <li
@@ -477,10 +498,13 @@ function App() {
                 <div className='card-actions justify-end'>
                   <div>
                     $&nbsp;
-                    {(
-                      (inputs.initialAmount - totalDeductions) *
-                      (inputs.freedom * 0.01)
-                    ).toFixed(2)}
+                    {
+                      // (inputs.initialAmount - totalDeductions) *
+                      (
+                        (initialAmount - totalDeductions) *
+                        (inputs.freedom * 0.01)
+                      ).toFixed(2)
+                    }
                   </div>
                 </div>
               </div>
@@ -505,10 +529,13 @@ function App() {
                 <div className='card-actions justify-end'>
                   <div>
                     $&nbsp;
-                    {(
-                      (inputs.initialAmount - totalDeductions) *
-                      (inputs.dreams * 0.01)
-                    ).toFixed(2)}
+                    {
+                      // (inputs.initialAmount - totalDeductions) *
+                      (
+                        (initialAmount - totalDeductions) *
+                        (inputs.dreams * 0.01)
+                      ).toFixed(2)
+                    }
                   </div>
                 </div>
               </div>
@@ -533,10 +560,13 @@ function App() {
                 <div className='card-actions justify-end'>
                   <div>
                     $&nbsp;
-                    {(
-                      (inputs.initialAmount - totalDeductions) *
-                      (inputs.generosity * 0.01)
-                    ).toFixed(2)}
+                    {
+                      // (inputs.initialAmount - totalDeductions) *
+                      (
+                        (initialAmount - totalDeductions) *
+                        (inputs.generosity * 0.01)
+                      ).toFixed(2)
+                    }
                   </div>
                 </div>
               </div>
@@ -561,10 +591,13 @@ function App() {
                 <div className='card-actions justify-end'>
                   <div>
                     $&nbsp;
-                    {(
-                      (inputs.initialAmount - totalDeductions) *
-                      (inputs.knowledge * 0.01)
-                    ).toFixed(2)}
+                    {
+                      // (inputs.initialAmount - totalDeductions) *
+                      (
+                        (initialAmount - totalDeductions) *
+                        (inputs.knowledge * 0.01)
+                      ).toFixed(2)
+                    }
                   </div>
                 </div>
               </div>
@@ -589,10 +622,13 @@ function App() {
                 <div className='card-actions justify-end'>
                   <div>
                     $&nbsp;
-                    {(
-                      (inputs.initialAmount - totalDeductions) *
-                      (inputs.joy * 0.01)
-                    ).toFixed(2)}
+                    {
+                      // (inputs.initialAmount - totalDeductions) *
+                      (
+                        (initialAmount - totalDeductions) *
+                        (inputs.joy * 0.01)
+                      ).toFixed(2)
+                    }
                   </div>
                 </div>
               </div>
@@ -638,10 +674,13 @@ function App() {
                     </div>
                     <div>
                       $&nbsp;
-                      {(
-                        (inputs.initialAmount - totalDeductions) *
-                        (jar.value * 0.01)
-                      ).toFixed(2)}
+                      {
+                        // (inputs.initialAmount - totalDeductions) *
+                        (
+                          (initialAmount - totalDeductions) *
+                          (jar.value * 0.01)
+                        ).toFixed(2)
+                      }
                     </div>
                   </div>
                 </div>
@@ -806,7 +845,8 @@ function App() {
                 $&nbsp;
                 {(
                   necessities *
-                  (inputs.initialAmount - totalDeductions) *
+                  // (inputs.initialAmount - totalDeductions) *
+                  (initialAmount - totalDeductions) *
                   0.01
                 ).toFixed(2)}
               </div>
