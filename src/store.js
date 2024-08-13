@@ -5,6 +5,15 @@ const useInputsStore = create((set) => ({
   deductions: [],
   totalDeductions: 0,
   distributableAmount: 0,
+  jarInputs: {
+    dreams: 10,
+    freedom: 10,
+    knowledge: 10,
+    generosity: 5,
+    joy: 10,
+  },
+  customJars: [],
+  necessities: 100,
 
   setinitialAmount: (amt) => set({ initialAmount: amt }),
 
@@ -68,6 +77,37 @@ const useInputsStore = create((set) => ({
     })),
 
   setDistributableAmount: (amt) => set({ distributableAmount: amt }),
+
+  setJarInputs: (name, value) =>
+    set((state) => ({
+      jarInputs: { ...state.jarInputs, [name]: parseFloat(value) || value },
+    })),
+
+  addCustomJar: () =>
+    set((state) => ({
+      customJars: [...state.customJars, { value: 0, name: 'Custom Jar' }],
+    })),
+
+  updateCustomJar: (index, name, value) =>
+    set((state) => ({
+      customJars: state.customJars.map((jar, i) =>
+        i === index ? { ...jar, [name]: parseFloat(value) || value } : jar
+      ),
+    })),
+
+  renameCustomJar: (newName, index) =>
+    set((state) => ({
+      customJars: state.customJars.map((jar, i) =>
+        i === index ? { ...jar, name: newName } : jar
+      ),
+    })),
+
+  removeCustomJar: (index) =>
+    set((state) => ({
+      customJars: state.customJars.filter((_, i) => i !== index),
+    })),
+
+  setNecessities: (amt) => set({ necessities: amt }),
 }));
 
 export default useInputsStore;

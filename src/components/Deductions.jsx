@@ -5,6 +5,7 @@ import { FaPercent } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
 import { GrAdd } from 'react-icons/gr';
 import useInputsStore from '../store';
+import { validateDecimal } from '../utils/validation';
 
 const Deductions = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
@@ -26,11 +27,6 @@ const Deductions = () => {
   const setDistributableAmount = useInputsStore(
     (state) => state.setDistributableAmount
   );
-
-  const validateDecimal = (value) => {
-    const pattern = /^\d*(\.\d{0,2})?$/;
-    return pattern.test(value);
-  };
 
   const handleRenameDeduction = (index) => {
     const newName = window.prompt(

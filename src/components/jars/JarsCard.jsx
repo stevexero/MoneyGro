@@ -5,6 +5,7 @@ import useInputsStore from '../../store';
 const JarsCard = ({ jarId, jarTitle, jarValue, handleJarPercentageChange }) => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const totalDeductions = useInputsStore((state) => state.totalDeductions);
+
   return (
     <div className='card card-compact bg-neutral text-neutral-content rounded-xl'>
       <div className='card-body'>
@@ -13,6 +14,7 @@ const JarsCard = ({ jarId, jarTitle, jarValue, handleJarPercentageChange }) => {
           <input
             type='number'
             className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+            // name='value'
             name={jarId}
             id={jarId}
             value={jarValue}
@@ -22,7 +24,7 @@ const JarsCard = ({ jarId, jarTitle, jarValue, handleJarPercentageChange }) => {
           />
           <FaPercent size='2rem' />
         </div>
-        <div className='card-actions justify-end'>
+        <div className={'card-actions justify-end'}>
           <div>
             $&nbsp;
             {((initialAmount - totalDeductions) * (jarValue * 0.01)).toFixed(2)}
