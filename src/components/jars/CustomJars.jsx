@@ -36,7 +36,7 @@ const CustomJars = () => {
           data-tip='Add a Custom Jar'
           onClick={addCustomJar}
         >
-          <GrAdd size='2rem' className='ml-[0.95rem]' />
+          <GrAdd size='2rem' className='ml-[0.95rem] text-white' />
         </button>
       </div>
     </>
