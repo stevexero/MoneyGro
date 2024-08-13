@@ -2,15 +2,15 @@ import { useState, useEffect, useMemo } from 'react';
 import { GrClose } from 'react-icons/gr';
 import useInputsStore from '../store';
 
-const AnimatedInput = () => {
+const AnimatedInput: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const setinitialAmount = useInputsStore((state) => state.setinitialAmount);
 
-  const [displayedText, setDisplayedText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopIndex, setLoopIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(75);
+  const [displayedText, setDisplayedText] = useState<string>('');
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [loopIndex, setLoopIndex] = useState<number>(0);
+  const [charIndex, setCharIndex] = useState<number>(0);
+  const [typingSpeed, setTypingSpeed] = useState<number>(75);
 
   const placeholders = useMemo(
     () => [
@@ -28,7 +28,7 @@ const AnimatedInput = () => {
     []
   );
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setinitialAmount(e.target.value);
   };
 

@@ -1,10 +1,19 @@
-import PropTypes from 'prop-types';
 import { FaPercent } from 'react-icons/fa6';
 import useInputsStore from '../../store';
 import { CgRename } from 'react-icons/cg';
 import { GrClose } from 'react-icons/gr';
 
-const CustomJarCard = ({
+interface CustomJarCardProps {
+  jarIndex: number;
+  jarId: string;
+  jarTitle: string;
+  jarValue: number;
+  handleJarPercentageChange: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+}
+
+const CustomJarCard: React.FC<CustomJarCardProps> = ({
   jarIndex,
   jarId,
   jarTitle,
@@ -17,7 +26,12 @@ const CustomJarCard = ({
   const renameCustomJar = useInputsStore((state) => state.renameCustomJar);
   const removeCustomJar = useInputsStore((state) => state.removeCustomJar);
 
-  const updateCustomJar = (index) => {
+  const initialAmt =
+    typeof initialAmount === 'string'
+      ? parseFloat(initialAmount) || 0
+      : initialAmount;
+
+  const updateCustomJar = (index: number) => {
     const newName = window.prompt(
       'Enter new name for the jar:',
       customJars[index].name
@@ -65,22 +79,12 @@ const CustomJarCard = ({
           </div>
           <div>
             $&nbsp;
-            {((initialAmount - totalDeductions) * (jarValue * 0.01)).toFixed(2)}
+            {((initialAmt - totalDeductions) * (jarValue * 0.01)).toFixed(2)}
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-CustomJarCard.propTypes = {
-  jarIndex: PropTypes.number,
-  jarId: PropTypes.string,
-  jarTitle: PropTypes.string,
-  jarValue: PropTypes.number,
-  handleJarPercentageChange: PropTypes.func,
-  customCard: PropTypes.bool,
-  customCardIndex: PropTypes.number,
 };
 
 export default CustomJarCard;

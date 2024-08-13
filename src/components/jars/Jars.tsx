@@ -2,11 +2,11 @@ import JarsCard from './JarsCard';
 import useInputsStore from '../../store';
 import { validatePercentage } from '../../utils/validation';
 
-const Jars = () => {
+const Jars: React.FC = () => {
   const jarInputs = useInputsStore((state) => state.jarInputs);
   const setJarInputs = useInputsStore((state) => state.setJarInputs);
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
     if (validatePercentage(value)) {
@@ -18,7 +18,6 @@ const Jars = () => {
     <>
       <JarsCard
         jarId='freedom'
-        jarName='freedom'
         jarTitle='Freedom'
         jarValue={jarInputs.freedom}
         handleJarPercentageChange={handleChange}
@@ -26,7 +25,6 @@ const Jars = () => {
 
       <JarsCard
         jarId='dreams'
-        jarName='dreams'
         jarTitle='Dreams'
         jarValue={jarInputs.dreams}
         handleJarPercentageChange={handleChange}
@@ -34,7 +32,6 @@ const Jars = () => {
 
       <JarsCard
         jarId='generosity'
-        jarName='generosity'
         jarTitle='Generosity'
         jarValue={jarInputs.generosity}
         handleJarPercentageChange={handleChange}
@@ -42,7 +39,6 @@ const Jars = () => {
 
       <JarsCard
         jarId='knowledge'
-        jarName='knowledge'
         jarTitle='Knowledge'
         jarValue={jarInputs.knowledge}
         handleJarPercentageChange={handleChange}
@@ -50,7 +46,6 @@ const Jars = () => {
 
       <JarsCard
         jarId='joy'
-        jarName='joy'
         jarTitle='Joy'
         jarValue={jarInputs.joy}
         handleJarPercentageChange={handleChange}

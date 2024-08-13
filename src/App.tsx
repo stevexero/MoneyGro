@@ -5,7 +5,7 @@ import Jars from './components/jars/Jars';
 import CustomJars from './components/jars/CustomJars';
 import Necessities from './components/Necessities';
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className='container mx-auto px-4 md:px-0 overflow-x-hidden'>
       <Navbar />
@@ -43,6 +43,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

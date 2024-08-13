@@ -1,6 +1,6 @@
 import { GrMoney } from 'react-icons/gr';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return (
     <nav className='navbar rounded-full'>
       <div className='flex-none'>
