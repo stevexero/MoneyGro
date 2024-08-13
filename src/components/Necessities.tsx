@@ -1,13 +1,18 @@
 import { useEffect } from 'react';
 import useInputsStore from '../store';
 
-const Necessities = () => {
+const Necessities: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const totalDeductions = useInputsStore((state) => state.totalDeductions);
   const jarInputs = useInputsStore((state) => state.jarInputs);
   const customJars = useInputsStore((state) => state.customJars);
   const necessities = useInputsStore((state) => state.necessities);
   const setNecessities = useInputsStore((state) => state.setNecessities);
+
+  const initialAmt =
+    typeof initialAmount === 'string'
+      ? parseFloat(initialAmount) || 0
+      : initialAmount;
 
   useEffect(() => {
     setNecessities(
@@ -17,10 +22,7 @@ const Necessities = () => {
           jarInputs.knowledge +
           jarInputs.freedom +
           jarInputs.dreams +
-          customJars.reduce(
-            (acc, jar) => acc + (parseFloat(jar.value) || 0),
-            0
-          ))
+          customJars.reduce((acc: number, jar) => acc + jar.value, 0))
     );
   }, [
     jarInputs.dreams,
@@ -40,7 +42,7 @@ const Necessities = () => {
         </h2>
         <div className='font-bold text-4xl mt-4'>
           $&nbsp;
-          {(necessities * (initialAmount - totalDeductions) * 0.01).toFixed(2)}
+          {(necessities * (initialAmt - totalDeductions) * 0.01).toFixed(2)}
         </div>
       </div>
     </div>

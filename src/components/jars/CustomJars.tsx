@@ -8,7 +8,10 @@ const CustomJars = () => {
   const addCustomJar = useInputsStore((state) => state.addCustomJar);
   const updateCustomJar = useInputsStore((state) => state.updateCustomJar);
 
-  const handleChange = (event, index) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const { name, value } = event.target;
 
     if (validatePercentage(value)) {
@@ -26,8 +29,6 @@ const CustomJars = () => {
           jarTitle={jar.name}
           jarValue={jar.value}
           handleJarPercentageChange={(event) => handleChange(event, index)}
-          customCard={true}
-          customCardIndex={index}
         />
       ))}
       <div className='card card-compact bg-transparent card-bordered border-neutral text-neutral-content rounded-xl flex items-center justify-center min-h-[156px]'>

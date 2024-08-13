@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CgRename } from 'react-icons/cg';
 import { TbLockDollar } from 'react-icons/tb';
 import { FaPercent } from 'react-icons/fa6';
@@ -7,7 +7,7 @@ import { GrAdd } from 'react-icons/gr';
 import useInputsStore from '../store';
 import { validateDecimal } from '../utils/validation';
 
-const Deductions = () => {
+const Deductions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const deductions = useInputsStore((state) => state.deductions);
   const addDeduction = useInputsStore((state) => state.addDeduction);
@@ -28,7 +28,14 @@ const Deductions = () => {
     (state) => state.setDistributableAmount
   );
 
-  const handleRenameDeduction = (index) => {
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const initialAmt =
+    typeof initialAmount === 'string'
+      ? parseFloat(initialAmount)
+      : initialAmount;
+
+  const handleRenameDeduction = (index: number) => {
     const newName = window.prompt(
       'Enter new name for the deduction:',
       deductions[index].name
@@ -38,7 +45,10 @@ const Deductions = () => {
     }
   };
 
-  const handleDeductionChange = (index, event) => {
+  const handleDeductionChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = event.target;
 
     if (validateDecimal(value)) {
@@ -46,23 +56,31 @@ const Deductions = () => {
     }
   };
 
-  const handleDeductionTypeToggle = (index) => {
+  const handleDeductionTypeToggle = (index: number) => {
     toggleDeductionType(index);
   };
 
-  const removeDeductionField = (index) => {
+  const removeDeductionField = (index: number) => {
     removeDeduction(index);
   };
 
   useEffect(() => {
-    setTotalDeductions(initialAmount);
-  }, [deductions, initialAmount, setTotalDeductions]);
+    setTotalDeductions(initialAmt);
+  }, [deductions, initialAmt, setTotalDeductions]);
 
   useEffect(() => {
-    const initialAmt = parseFloat(initialAmount || 0);
-    const amountLeftAfterDeductions = initialAmt - totalDeductions;
+    const initAmt = initialAmt || 0;
+    const amountLeftAfterDeductions = initAmt - totalDeductions;
     setDistributableAmount(amountLeftAfterDeductions);
-  }, [totalDeductions, initialAmount, setDistributableAmount]);
+  }, [totalDeductions, initialAmt, setDistributableAmount]);
+
+  useEffect(() => {
+    if (initialAmt <= 0 || isNaN(initialAmt)) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [initialAmt]);
 
   return (
     <>
@@ -78,13 +96,13 @@ const Deductions = () => {
           <div className='collapse-content bg-transparent'>
             <div className='flex flex-row items-center'>
               <div
-                className={`${initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
+                className={`${typeof initialAmount === 'number' && initialAmount <= 0 && 'hover:cursor-not-allowed opacity-50'} mt-[0.27rem]`}
               >
                 <button
                   className='btn btn-circle btn-sm btn-outline btn-secondary tooltip tooltip-right'
                   data-tip='Rename Deduction'
                   onClick={() => handleRenameDeduction(index)}
-                  disabled={initialAmount <= 0}
+                  disabled={isDisabled}
                 >
                   <CgRename
                     className='ml-[0.35rem] mt-[0.075rem]'
@@ -101,7 +119,7 @@ const Deductions = () => {
                   className='grow w-full'
                   placeholder='0'
                   onChange={(event) => handleDeductionChange(index, event)}
-                  disabled={initialAmount <= 0}
+                  disabled={isDisabled}
                 />
                 <span>
                   {deduction.type === 'fixed' ? (
@@ -118,28 +136,24 @@ const Deductions = () => {
               <div className='flex flex-row items-center mt-4 mb-2'>
                 <span
                   className='tooltip tooltip-right'
-                  data-tip={
-                    initialAmount <= 0 ? null : 'Fixed Amount Deduction'
-                  }
+                  data-tip={isDisabled ? null : 'Fixed Amount Deduction'}
                 >
                   <TbLockDollar
                     className={`${
                       deduction.type === 'fixed'
                         ? `${
-                            initialAmount <= 0
+                            isDisabled
                               ? 'text-secondary opacity-50 hover:cursor-not-allowed'
                               : 'text-primary'
                           }`
-                        : initialAmount <= 0
+                        : isDisabled
                           ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
                           : 'text-secondary dark:opacity-50 hover:cursor-pointer'
                     } duration-200`}
                     onClick={
-                      deduction.type === 'fixed'
-                        ? null
-                        : initialAmount <= 0
-                          ? null
-                          : () => handleDeductionTypeToggle(index)
+                      deduction.type !== 'fixed' && !isDisabled
+                        ? () => handleDeductionTypeToggle(index)
+                        : undefined
                     }
                     size='1.2rem'
                   />
@@ -149,30 +163,28 @@ const Deductions = () => {
                   className='toggle toggle-secondary ml-4 rounded-full custom-toggle-duration'
                   checked={deduction.type === 'percentage'}
                   onChange={() => handleDeductionTypeToggle(index)}
-                  disabled={initialAmount <= 0}
+                  disabled={isDisabled}
                 />
                 <span
                   className='tooltip tooltip-right ml-4'
-                  data-tip={initialAmount <= 0 ? null : 'Percentage Deduction'}
+                  data-tip={isDisabled ? null : 'Percentage Deduction'}
                 >
                   <FaPercent
                     className={`${
                       deduction.type === 'fixed'
                         ? `${
-                            initialAmount <= 0
+                            isDisabled
                               ? 'text-secondary dark:opacity-50 hover:cursor-not-allowed'
                               : 'text-secondary dark:opacity-50 hover:cursor-pointer'
                           }`
-                        : initialAmount <= 0
+                        : isDisabled
                           ? 'text-secondary opacity-50 hover:cursor-not-allowed'
                           : 'text-primary'
                     } duration-200`}
                     onClick={
-                      deduction.type === 'fixed'
-                        ? initialAmount <= 0
-                          ? null
-                          : () => handleDeductionTypeToggle(index)
-                        : null
+                      deduction.type !== 'percentage' && !isDisabled
+                        ? () => handleDeductionTypeToggle(index)
+                        : undefined
                     }
                   />
                 </span>
@@ -213,10 +225,20 @@ const Deductions = () => {
               <h3 className='font-bold text-lg'>Itemized Deductions:</h3>
               <ul>
                 {deductions.map((deduction, index) => {
+                  const initialAmt =
+                    typeof initialAmount === 'number'
+                      ? initialAmount
+                      : parseFloat(initialAmount);
+                  const deductionValue =
+                    typeof deduction.value === 'number'
+                      ? deduction.value
+                      : parseFloat(deduction.value || '0');
+
                   const deductionAmount =
                     deduction.type === 'percentage'
-                      ? (initialAmount * deduction.value) / 100
-                      : deduction.value || 0;
+                      ? (initialAmt * deductionValue) / 100
+                      : deductionValue;
+
                   return (
                     <li
                       key={index}

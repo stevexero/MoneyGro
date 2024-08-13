@@ -1,6 +1,58 @@
 import { create } from 'zustand';
 
-const useInputsStore = create((set) => ({
+interface Deduction {
+  value: string | number;
+  type: 'fixed' | 'percentage';
+  name: string;
+}
+
+interface JarInputs {
+  dreams: number;
+  freedom: number;
+  knowledge: number;
+  generosity: number;
+  joy: number;
+}
+
+interface CustomJar {
+  value: number;
+  name: string;
+}
+
+interface InputsState {
+  initialAmount: string | number;
+  deductions: Deduction[];
+  totalDeductions: number;
+  distributableAmount: number;
+  jarInputs: JarInputs;
+  customJars: CustomJar[];
+  necessities: number;
+
+  setinitialAmount: (amt: string | number) => void;
+  addDeduction: () => void;
+  updateDeduction: (
+    index: number,
+    name: string,
+    value: string | number
+  ) => void;
+  toggleDeductionType: (index: number) => void;
+  renameDeduction: (index: number, newName: string) => void;
+  removeDeduction: (index: number) => void;
+  setTotalDeductions: (initialAmt: number) => void;
+  setDistributableAmount: (amt: number) => void;
+  setJarInputs: (name: string, value: string | number) => void;
+  addCustomJar: () => void;
+  updateCustomJar: (
+    index: number,
+    name: string,
+    value: string | number
+  ) => void;
+  renameCustomJar: (newName: string, index: number) => void;
+  removeCustomJar: (index: number) => void;
+  setNecessities: (amt: number) => void;
+}
+
+const useInputsStore = create<InputsState>((set) => ({
   initialAmount: '',
   deductions: [],
   totalDeductions: 0,
@@ -25,14 +77,14 @@ const useInputsStore = create((set) => ({
       ],
     })),
 
-  updateDeduction: (index, name, value) =>
+  updateDeduction: (index, name, value) => {
+    const newValue = typeof value === 'string' ? parseFloat(value) : value;
     set((state) => ({
       deductions: state.deductions.map((deduction, i) =>
-        i === index
-          ? { ...deduction, [name]: parseFloat(value) || value }
-          : deduction
+        i === index ? { ...deduction, [name]: newValue || value } : deduction
       ),
-    })),
+    }));
+  },
 
   toggleDeductionType: (index) =>
     set((state) => ({
@@ -66,7 +118,10 @@ const useInputsStore = create((set) => ({
   setTotalDeductions: (initialAmt) =>
     set((state) => ({
       totalDeductions: state.deductions.reduce((acc, curr) => {
-        const deductionValue = parseFloat(curr.value || 0);
+        const deductionValue =
+          typeof curr.value === 'number'
+            ? curr.value
+            : parseFloat(curr.value || '0');
         return (
           acc +
           (curr.type === 'percentage'
@@ -78,22 +133,26 @@ const useInputsStore = create((set) => ({
 
   setDistributableAmount: (amt) => set({ distributableAmount: amt }),
 
-  setJarInputs: (name, value) =>
+  setJarInputs: (name, value) => {
+    const newValue = typeof value === 'string' ? parseFloat(value) : value;
     set((state) => ({
-      jarInputs: { ...state.jarInputs, [name]: parseFloat(value) || value },
-    })),
+      jarInputs: { ...state.jarInputs, [name]: newValue || value },
+    }));
+  },
 
   addCustomJar: () =>
     set((state) => ({
       customJars: [...state.customJars, { value: 0, name: 'Custom Jar' }],
     })),
 
-  updateCustomJar: (index, name, value) =>
+  updateCustomJar: (index, name, value) => {
+    const newValue = typeof value === 'string' ? parseFloat(value) : value;
     set((state) => ({
       customJars: state.customJars.map((jar, i) =>
-        i === index ? { ...jar, [name]: parseFloat(value) || value } : jar
+        i === index ? { ...jar, [name]: newValue || value } : jar
       ),
-    })),
+    }));
+  },
 
   renameCustomJar: (newName, index) =>
     set((state) => ({
