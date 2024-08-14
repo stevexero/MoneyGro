@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { CgRename } from 'react-icons/cg';
 import { TbLockDollar } from 'react-icons/tb';
 import { FaPercent } from 'react-icons/fa6';
-import { FaTimes, FaEyeSlash } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import { GrAdd } from 'react-icons/gr';
 import useInputsStore from '../../store';
 import { validateDecimal } from '../../utils/validation';
 import DeductionsSummary from './DeductionsSummary';
+import ItemizedDeductions from './ItemizedDeductions';
 
 const Deductions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
@@ -22,16 +23,10 @@ const Deductions: React.FC = () => {
   const setTotalDeductions = useInputsStore(
     (state) => state.setTotalDeductions
   );
-  const distributableAmount = useInputsStore(
-    (state) => state.distributableAmount
-  );
   const setDistributableAmount = useInputsStore(
     (state) => state.setDistributableAmount
   );
   const deductionsHidden = useInputsStore((state) => state.deductionsHidden);
-  const toggleDeductionsHidden = useInputsStore(
-    (state) => state.toggleDeductionsHidden
-  );
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -244,67 +239,7 @@ const Deductions: React.FC = () => {
           </div>
 
           {/* ITEMIZED DEDUCTIONS */}
-          {deductions && deductions.length > 0 && (
-            <div className='border-info border-2 rounded-3xl mb-2 p-6 mt-4 w-full max-w-sm'>
-              {deductions.length > 0 && (
-                <div>
-                  <div className='w-full flex flex-row items-center justify-between'>
-                    <h3 className='font-bold text-lg'>Itemized Deductions:</h3>
-                    <button
-                      type='button'
-                      className='btn btn-circle btn-xs btn-outline btn-error tooltip tooltip-left'
-                      data-tip='Hide Deductions'
-                      onClick={() => toggleDeductionsHidden()}
-                    >
-                      <FaEyeSlash className='ml-[0.3rem]' />
-                    </button>
-                  </div>
-                  <ul>
-                    {deductions.map((deduction, index) => {
-                      const initialAmt =
-                        typeof initialAmount === 'number'
-                          ? initialAmount
-                          : parseFloat(initialAmount);
-                      const deductionValue =
-                        typeof deduction.value === 'number'
-                          ? deduction.value
-                          : parseFloat(deduction.value || '0');
-
-                      const deductionAmount =
-                        deduction.type === 'percentage'
-                          ? (initialAmt * deductionValue) / 100
-                          : deductionValue;
-
-                      return (
-                        <li
-                          key={index}
-                          className='list-disc list-inside text-sm font-semibold ml-6 mt-2 first:mt-4'
-                        >
-                          {deduction.name}:{' '}
-                          <span className='font-light'>$</span>
-                          <span className='font-normal text-secondary'>
-                            {deductionAmount.toFixed(2)}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  <p className='mt-4 font-semibold'>
-                    Total Deductions: <span className='font-light'>$</span>
-                    <span className='font-normal text-secondary'>
-                      {totalDeductions.toFixed(2)}
-                    </span>
-                  </p>
-                  <p className='mt-4 font-semibold'>
-                    Distributable Amount: <span className='font-light'>$</span>
-                    <span className='font-normal text-secondary'>
-                      {distributableAmount.toFixed(2)}
-                    </span>
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
+          <ItemizedDeductions />
         </>
       )}
 
