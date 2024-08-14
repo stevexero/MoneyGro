@@ -31,7 +31,7 @@ const JarsCard: React.FC<JarsCardProps> = ({
         <div className='w-full flex justify-center items-center'>
           <input
             type='number'
-            className='input bg-transparent font-bold text-4xl max-w-[4.5rem] text-center focus:outline-none active:outline-none focus:border-none active:border-none'
+            className={`input bg-transparent font-bold text-4xl max-w-[4.5rem] focus:outline-none active:outline-none focus:border-none active:border-none ${jarValue.toString().length === 1 ? 'text-center' : ''}`}
             name={jarId}
             id={jarId}
             value={jarValue}

@@ -4,6 +4,7 @@ import Deductions from './components/Deductions';
 import Jars from './components/jars/Jars';
 import CustomJars from './components/jars/CustomJars';
 import Necessities from './components/Necessities';
+import TotalDistributions from './components/TotalDistributions';
 
 const App: React.FC = () => {
   return (
@@ -20,24 +21,7 @@ const App: React.FC = () => {
             <CustomJars />
           </div>
 
-          {/* TODO: TOTAL DISTRIBUTIONS */}
-          {/* <div className='card bg-neutral text-neutral-content rounded-xl mt-6 mb-16 w-full max-w-lg p-4 lg:max-w-2xl'>
-            <div className='card-body w-full flex justify-center items-center '>
-              <span className='card-title'>
-                {necessities}% - Total Distributions
-              </span>
-              <div className='font-bold text-4xl mt-4'>
-                $&nbsp;
-                {(
-                  necessities *
-                  // (inputs.initialAmount - totalDeductions) *
-                  (initialAmount - totalDeductions) *
-                  0.01
-                ).toFixed(2)}
-              </div>
-            </div>
-          </div> */}
-
+          <TotalDistributions />
           <Necessities />
         </div>
       </div>

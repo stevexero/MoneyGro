@@ -90,8 +90,13 @@ const Deductions: React.FC = () => {
           key={index}
         >
           <input type='checkbox' className='peer' defaultChecked />
-          <div className='collapse-title bg-transparent peer-checked:border-b-0'>
-            {deduction.name}
+          <div className='collapse-title bg-transparent peer-checked:border-b-0 ml-1 after:-mt-[0.175rem] after:mr-1'>
+            {deduction.name}{' '}
+            {typeof deduction.value === 'string'
+              ? parseFloat(deduction.value) > 0 &&
+                `: ${deduction.type === 'fixed' ? '$' : ''}${deduction.value}${deduction.type === 'percentage' ? '%' : ''}`
+              : deduction.value > 0 &&
+                `: ${deduction.type === 'fixed' ? '$' : ''}${deduction.value}${deduction.type === 'percentage' ? '%' : ''}`}
           </div>
           <div className='collapse-content bg-transparent'>
             <div className='flex flex-row items-center'>
@@ -110,7 +115,7 @@ const Deductions: React.FC = () => {
                   />
                 </button>
               </div>
-              <label className='input input-bordered input-sm input-secondary rounded-full w-full flex items-center gap-2 px-4 ml-4'>
+              <label className='input input-bordered input-sm input-secondary rounded-full w-full flex items-center gap-2 px-4 ml-4 whitespace-nowrap'>
                 {deduction.name}:
                 <input
                   type='number'

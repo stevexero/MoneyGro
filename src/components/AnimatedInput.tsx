@@ -5,6 +5,9 @@ import useInputsStore from '../store';
 const AnimatedInput: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const setinitialAmount = useInputsStore((state) => state.setinitialAmount);
+  const removeAllDeductions = useInputsStore(
+    (state) => state.removeAllDeductions
+  );
 
   const [displayedText, setDisplayedText] = useState<string>('');
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -34,6 +37,7 @@ const AnimatedInput: React.FC = () => {
 
   const handleResetClick = () => {
     setinitialAmount('');
+    removeAllDeductions();
   };
 
   useEffect(() => {

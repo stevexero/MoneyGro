@@ -38,6 +38,7 @@ interface InputsState {
   toggleDeductionType: (index: number) => void;
   renameDeduction: (index: number, newName: string) => void;
   removeDeduction: (index: number) => void;
+  removeAllDeductions: () => void;
   setTotalDeductions: (initialAmt: number) => void;
   setDistributableAmount: (amt: number) => void;
   setJarInputs: (name: string, value: string | number) => void;
@@ -115,6 +116,8 @@ const useInputsStore = create<InputsState>((set) => ({
       deductions: state.deductions.filter((_, i) => i !== index),
     })),
 
+  removeAllDeductions: () => set({ deductions: [] }),
+
   setTotalDeductions: (initialAmt) =>
     set((state) => ({
       totalDeductions: state.deductions.reduce((acc, curr) => {
@@ -135,9 +138,22 @@ const useInputsStore = create<InputsState>((set) => ({
 
   setJarInputs: (name, value) => {
     const newValue = typeof value === 'string' ? parseFloat(value) : value;
-    set((state) => ({
-      jarInputs: { ...state.jarInputs, [name]: newValue || value },
-    }));
+
+    set((state) => {
+      const updatedJarInputs = { ...state.jarInputs, [name]: newValue || 0 };
+
+      const totalJarPercentage = Object.values(updatedJarInputs).reduce(
+        (acc, curr) => acc + (typeof curr === 'number' ? curr : 0),
+        0
+      );
+
+      const necessities = 100 - totalJarPercentage;
+
+      return {
+        jarInputs: updatedJarInputs,
+        necessities: necessities >= 0 ? necessities : 0,
+      };
+    });
   },
 
   addCustomJar: () =>
@@ -147,11 +163,29 @@ const useInputsStore = create<InputsState>((set) => ({
 
   updateCustomJar: (index, name, value) => {
     const newValue = typeof value === 'string' ? parseFloat(value) : value;
-    set((state) => ({
-      customJars: state.customJars.map((jar, i) =>
-        i === index ? { ...jar, [name]: newValue || value } : jar
-      ),
-    }));
+
+    set((state) => {
+      const updatedCustomJars = state.customJars.map((jar, i) =>
+        i === index ? { ...jar, [name]: newValue || 0 } : jar
+      );
+
+      const totalJarPercentage =
+        Object.values(state.jarInputs).reduce(
+          (acc, curr) => acc + (typeof curr === 'number' ? curr : 0),
+          0
+        ) +
+        updatedCustomJars.reduce(
+          (acc, jar) => acc + (typeof jar.value === 'number' ? jar.value : 0),
+          0
+        );
+
+      const necessities = 100 - totalJarPercentage;
+
+      return {
+        customJars: updatedCustomJars,
+        necessities: necessities >= 0 ? necessities : 0,
+      };
+    });
   },
 
   renameCustomJar: (newName, index) =>
