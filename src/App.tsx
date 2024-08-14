@@ -7,6 +7,8 @@ import Necessities from './components/Necessities';
 import TotalDistributions from './components/TotalDistributions';
 
 const App: React.FC = () => {
+  localStorage.setItem('umami.disabled', '1');
+
   return (
     <div className='container mx-auto px-4 md:px-0 overflow-x-hidden'>
       <Navbar />

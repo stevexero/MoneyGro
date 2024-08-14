@@ -61,7 +61,7 @@ const CustomJarCard: React.FC<CustomJarCardProps> = ({
           <FaPercent size='2rem' />
         </div>
         <div className='card-actions w-full flex flex-row justify-between items-center'>
-          <div>
+          <div className='flex flex-row items-center'>
             <button
               className='btn btn-circle btn-xs btn-outline btn-primary tooltip tooltip-right'
               data-tip='Rename Custom Jar'
