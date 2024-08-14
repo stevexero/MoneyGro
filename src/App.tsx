@@ -1,6 +1,6 @@
 import Navbar from './components/Navbar';
 import AnimatedInput from './components/AnimatedInput';
-import Deductions from './components/Deductions';
+import Deductions from './components/deductions/Deductions';
 import Jars from './components/jars/Jars';
 import CustomJars from './components/jars/CustomJars';
 import Necessities from './components/Necessities';

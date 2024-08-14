@@ -87,7 +87,7 @@ const useInputsStore = create<InputsState>((set) => ({
     const newValue = typeof value === 'string' ? parseFloat(value) : value;
 
     set((state) => {
-      let updatedDeductions = state.deductions.map((deduction, i) =>
+      const updatedDeductions = state.deductions.map((deduction, i) =>
         i === index ? { ...deduction, [name]: newValue || value } : deduction
       );
 

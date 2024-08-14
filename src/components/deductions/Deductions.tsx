@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { CgRename } from 'react-icons/cg';
 import { TbLockDollar } from 'react-icons/tb';
 import { FaPercent } from 'react-icons/fa6';
-import { FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaTimes, FaEyeSlash } from 'react-icons/fa';
 import { GrAdd } from 'react-icons/gr';
-import useInputsStore from '../store';
-import { validateDecimal } from '../utils/validation';
+import useInputsStore from '../../store';
+import { validateDecimal } from '../../utils/validation';
+import DeductionsSummary from './DeductionsSummary';
 
 const Deductions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
@@ -101,36 +102,7 @@ const Deductions: React.FC = () => {
   return (
     <>
       {deductionsHidden ? (
-        <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-6 w-full max-w-md'>
-          <div className='card-body w-full flex flex-row justify-between items-center'>
-            <div className='flex flex-row items-center flex-wrap'>
-              <span>
-                <span className='font-bold'>&nbsp;Deductions:</span>
-                &nbsp;$
-                <span className='text-secondary'>
-                  {totalDeductions.toFixed(2)}
-                </span>
-              </span>
-              <span>
-                &nbsp;&nbsp;
-                <span>
-                  <span className='font-bold'>Distributable:</span>&nbsp;$
-                  <span className='text-secondary'>
-                    {distributableAmount.toFixed(2)}
-                  </span>
-                </span>
-              </span>
-            </div>
-            <button
-              type='button'
-              className='btn btn-circle btn-xs btn-outline btn-error tooltip tooltip-left'
-              data-tip='Show Deductions'
-              onClick={() => toggleDeductionsHidden()}
-            >
-              <FaEye className='ml-[0.3rem]' />
-            </button>
-          </div>
-        </div>
+        <DeductionsSummary />
       ) : (
         <>
           {deductions.map((deduction, index) => (
