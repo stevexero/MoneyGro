@@ -24,7 +24,7 @@ const TotalDistributions: React.FC = () => {
   const totalDistributedAmount = (distributableAmount * totalPercentage) / 100;
 
   return (
-    <div className='card card-compact card-bordered border-primary border-2 rounded-3xl mt-6 w-full max-w-lg'>
+    <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-6 w-full max-w-md'>
       <div className='card-body w-full flex justify-center items-center'>
         <h3>
           <span className='text-secondary'>{totalPercentage}</span>% -{' '}

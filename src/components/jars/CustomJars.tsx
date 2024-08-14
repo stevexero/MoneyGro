@@ -31,7 +31,7 @@ const CustomJars = () => {
           handleJarPercentageChange={(event) => handleChange(event, index)}
         />
       ))}
-      <div className='card card-compact bg-transparent card-bordered border-info border-4 text-neutral-content rounded-2xl flex items-center justify-center min-h-[156px]'>
+      <div className='card card-compact bg-transparent card-bordered border-info border-2 text-neutral-content rounded-2xl flex items-center justify-center min-h-[156px]'>
         <button
           className='btn btn-circle btn-lg btn-info tooltip'
           data-tip='Add a Custom Jar'
