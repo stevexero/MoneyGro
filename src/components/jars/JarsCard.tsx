@@ -34,10 +34,11 @@ const JarsCard: React.FC<JarsCardProps> = ({
             className={`input bg-transparent font-bold text-4xl max-w-[4.5rem] focus:outline-none active:outline-none focus:border-none active:border-none ${jarValue.toString().length === 1 ? 'text-center' : ''}`}
             name={jarId}
             id={jarId}
-            value={jarValue}
+            value={jarValue === 0 ? '' : jarValue}
             onChange={handleJarPercentageChange}
             min={0}
             max={99}
+            placeholder='0'
           />
           <FaPercent size='2rem' />
         </div>

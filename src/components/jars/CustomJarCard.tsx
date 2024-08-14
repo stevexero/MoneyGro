@@ -71,9 +71,10 @@ const CustomJarCard: React.FC<CustomJarCardProps> = ({
               type='number'
               name='value'
               className={`input bg-transparent font-bold text-4xl max-w-[4.5rem] focus:outline-none active:outline-none focus:border-none active:border-none ${jarValue.toString().length === 1 ? 'text-center' : ''}`}
-              value={jarValue}
+              value={jarValue === 0 ? '' : jarValue}
               onChange={handleJarPercentageChange}
               min={0}
+              placeholder='0'
             />
             <FaPercent size='2rem' />
           </div>

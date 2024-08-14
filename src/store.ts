@@ -71,8 +71,10 @@ const useInputsStore = create<InputsState>((set) => ({
   customJars: [],
   necessities: 100,
 
+  // Initial Amount
   setinitialAmount: (amt) => set({ initialAmount: amt }),
 
+  // Deductions
   addDeduction: () =>
     set((state) => ({
       deductions: [
@@ -83,24 +85,46 @@ const useInputsStore = create<InputsState>((set) => ({
 
   updateDeduction: (index, name, value) => {
     const newValue = typeof value === 'string' ? parseFloat(value) : value;
-    set((state) => ({
-      deductions: state.deductions.map((deduction, i) =>
+
+    set((state) => {
+      let updatedDeductions = state.deductions.map((deduction, i) =>
         i === index ? { ...deduction, [name]: newValue || value } : deduction
-      ),
-    }));
+      );
+
+      if (updatedDeductions[index].type === 'percentage') {
+        if (newValue > 100) {
+          updatedDeductions[index].value = 100;
+        }
+      }
+
+      return { deductions: updatedDeductions };
+    });
   },
 
   toggleDeductionType: (index) =>
-    set((state) => ({
-      deductions: state.deductions.map((deduction, i) =>
-        i === index
-          ? {
-              ...deduction,
-              type: deduction.type === 'fixed' ? 'percentage' : 'fixed',
-            }
-          : deduction
-      ),
-    })),
+    set((state) => {
+      const updatedDeductions = state.deductions.map((deduction, i) => {
+        if (i === index) {
+          const newType: 'fixed' | 'percentage' =
+            deduction.type === 'fixed' ? 'percentage' : 'fixed';
+          const newValue =
+            newType === 'percentage' &&
+            typeof deduction.value === 'number' &&
+            deduction.value > 100
+              ? 100
+              : deduction.value;
+
+          return {
+            ...deduction,
+            type: newType,
+            value: newValue,
+          };
+        }
+        return deduction;
+      });
+
+      return { deductions: updatedDeductions };
+    }),
 
   renameDeduction: (index, newName) =>
     set((state) => ({
@@ -142,8 +166,10 @@ const useInputsStore = create<InputsState>((set) => ({
 
   setDistributableAmount: (amt) => set({ distributableAmount: amt }),
 
+  // Jars
   setJarInputs: (name, value) => {
-    const newValue = typeof value === 'string' ? parseFloat(value) : value;
+    const newValue =
+      value === '' ? 0 : typeof value === 'string' ? parseFloat(value) : value;
 
     set((state) => {
       const updatedJarInputs = { ...state.jarInputs, [name]: newValue || 0 };
@@ -162,13 +188,15 @@ const useInputsStore = create<InputsState>((set) => ({
     });
   },
 
+  // Custom Jars
   addCustomJar: () =>
     set((state) => ({
       customJars: [...state.customJars, { value: 0, name: 'Custom Jar' }],
     })),
 
   updateCustomJar: (index, name, value) => {
-    const newValue = typeof value === 'string' ? parseFloat(value) : value;
+    const newValue =
+      value === '' ? 0 : typeof value === 'string' ? parseFloat(value) : value;
 
     set((state) => {
       const updatedCustomJars = state.customJars.map((jar, i) =>
@@ -206,6 +234,7 @@ const useInputsStore = create<InputsState>((set) => ({
       customJars: state.customJars.filter((_, i) => i !== index),
     })),
 
+  // Necessities
   setNecessities: (amt) => set({ necessities: amt }),
 }));
 

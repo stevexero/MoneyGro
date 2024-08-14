@@ -64,7 +64,11 @@ const Deductions: React.FC = () => {
     const { name, value } = event.target;
 
     if (validateDecimal(value)) {
-      updateDeduction(index, name, value);
+      if (deductions[index].type === 'percentage' && parseFloat(value) > 100) {
+        updateDeduction(index, name, 100);
+      } else {
+        updateDeduction(index, name, value);
+      }
     }
   };
 
