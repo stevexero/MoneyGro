@@ -8,6 +8,10 @@ const AnimatedInput: React.FC = () => {
   const removeAllDeductions = useInputsStore(
     (state) => state.removeAllDeductions
   );
+  const deductionsHidden = useInputsStore((state) => state.deductionsHidden);
+  const toggleDeductionsHidden = useInputsStore(
+    (state) => state.toggleDeductionsHidden
+  );
 
   const [displayedText, setDisplayedText] = useState<string>('');
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -38,6 +42,9 @@ const AnimatedInput: React.FC = () => {
   const handleResetClick = () => {
     setinitialAmount('');
     removeAllDeductions();
+    if (deductionsHidden) {
+      toggleDeductionsHidden();
+    }
   };
 
   useEffect(() => {

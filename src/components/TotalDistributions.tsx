@@ -24,14 +24,15 @@ const TotalDistributions: React.FC = () => {
   const totalDistributedAmount = (distributableAmount * totalPercentage) / 100;
 
   return (
-    <div className='card card-compact card-bordered border-primary border-4 rounded-3xl mt-6 w-full max-w-lg lg:max-w-2xl'>
-      <div className='card-body w-full flex justify-center items-center font-extralight'>
-        {/* <span className='card-title'> */}
+    <div className='card card-compact card-bordered border-primary border-2 rounded-3xl mt-6 w-full max-w-lg'>
+      <div className='card-body w-full flex justify-center items-center'>
         <h3>
-          {totalPercentage}% - Total Distributions: $
-          {totalDistributedAmount.toFixed(2)}
+          <span className='text-secondary'>{totalPercentage}</span>% -{' '}
+          <span className='font-bold'>Total Distributions:</span> $
+          <span className='text-secondary'>
+            {totalDistributedAmount.toFixed(2)}
+          </span>
         </h3>
-        {/* </span> */}
       </div>
     </div>
   );

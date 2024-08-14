@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <div className='mt-16 w-full flex flex-col items-center'>
           <Deductions />
 
-          <div className='container w-full max-w-lg grid grid-cols-2 gap-4 mt-8 lg:max-w-2xl lg:grid-cols-3'>
+          <div className='container w-full max-w-lg grid grid-cols-2 gap-4 mt-8'>
             <Jars />
             <CustomJars />
           </div>

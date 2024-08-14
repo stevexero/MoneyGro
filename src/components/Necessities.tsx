@@ -35,7 +35,7 @@ const Necessities: React.FC = () => {
   ]);
 
   return (
-    <div className='card bg-neutral text-neutral-content rounded-xl mt-4 mb-16 w-full max-w-lg p-4 lg:max-w-2xl'>
+    <div className='card bg-neutral text-neutral-content rounded-xl mt-4 mb-16 w-full max-w-lg p-4'>
       <div className='card-body w-full flex justify-center items-center '>
         <h2 className='card-title'>{necessities}% - Necessities</h2>
         <div className='font-bold text-4xl mt-4'>

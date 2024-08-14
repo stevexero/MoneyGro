@@ -23,6 +23,7 @@ interface InputsState {
   initialAmount: string | number;
   deductions: Deduction[];
   totalDeductions: number;
+  deductionsHidden: boolean;
   distributableAmount: number;
   jarInputs: JarInputs;
   customJars: CustomJar[];
@@ -36,6 +37,7 @@ interface InputsState {
     value: string | number
   ) => void;
   toggleDeductionType: (index: number) => void;
+  toggleDeductionsHidden: () => void;
   renameDeduction: (index: number, newName: string) => void;
   removeDeduction: (index: number) => void;
   removeAllDeductions: () => void;
@@ -57,6 +59,7 @@ const useInputsStore = create<InputsState>((set) => ({
   initialAmount: '',
   deductions: [],
   totalDeductions: 0,
+  deductionsHidden: false,
   distributableAmount: 0,
   jarInputs: {
     dreams: 10,
@@ -133,6 +136,9 @@ const useInputsStore = create<InputsState>((set) => ({
         );
       }, 0),
     })),
+
+  toggleDeductionsHidden: () =>
+    set((state) => ({ deductionsHidden: !state.deductionsHidden })),
 
   setDistributableAmount: (amt) => set({ distributableAmount: amt }),
 
