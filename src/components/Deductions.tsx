@@ -33,20 +33,28 @@ const Deductions: React.FC = () => {
   );
 
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentDeductionIndex, setCurrentDeductionIndex] = useState<
+    number | null
+  >(null);
+  const [newDeductionName, setNewDeductionName] = useState('');
 
   const initialAmt =
     typeof initialAmount === 'string'
       ? parseFloat(initialAmount)
       : initialAmount;
 
-  const handleRenameDeduction = (index: number) => {
-    const newName = window.prompt(
-      'Enter new name for the deduction:',
-      deductions[index].name
-    );
-    if (newName) {
-      renameDeduction(index, newName);
+  const openRenameModal = (index: number) => {
+    setCurrentDeductionIndex(index);
+    setNewDeductionName(deductions[index].name);
+    setIsModalOpen(true);
+  };
+
+  const handleRenameDeduction = () => {
+    if (currentDeductionIndex !== null && newDeductionName) {
+      renameDeduction(currentDeductionIndex, newDeductionName);
     }
+    setIsModalOpen(false);
   };
 
   const handleDeductionChange = (
@@ -88,20 +96,27 @@ const Deductions: React.FC = () => {
 
   return (
     <>
-      {deductionsHidden && deductions.length > 0 ? (
-        <div className='card card-compact card-bordered border-primary border-2 rounded-3xl mt-6 w-full max-w-lg'>
+      {deductionsHidden ? (
+        <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-6 w-full max-w-md'>
           <div className='card-body w-full flex flex-row justify-between items-center'>
-            <h3>
-              <span className='font-bold'>Deductions:</span> $
-              <span className='text-secondary'>
-                {totalDeductions.toFixed(2)}
+            <div className='flex flex-row items-center flex-wrap'>
+              <span>
+                <span className='font-bold'>&nbsp;Deductions:</span>
+                &nbsp;$
+                <span className='text-secondary'>
+                  {totalDeductions.toFixed(2)}
+                </span>
               </span>
-              &nbsp;&nbsp;
-              <span className='font-bold'>Distributable:</span> $
-              <span className='text-secondary'>
-                {distributableAmount.toFixed(2)}
+              <span>
+                &nbsp;&nbsp;
+                <span>
+                  <span className='font-bold'>Distributable:</span>&nbsp;$
+                  <span className='text-secondary'>
+                    {distributableAmount.toFixed(2)}
+                  </span>
+                </span>
               </span>
-            </h3>
+            </div>
             <button
               type='button'
               className='btn btn-circle btn-xs btn-outline btn-error tooltip tooltip-left'
@@ -116,7 +131,7 @@ const Deductions: React.FC = () => {
         <>
           {deductions.map((deduction, index) => (
             <div
-              className='collapse collapse-arrow border rounded-3xl mb-2 p-0 max-w-sm'
+              className='collapse collapse-arrow border-info border-2 rounded-3xl mb-4 p-0 max-w-sm'
               key={index}
             >
               <input type='checkbox' className='peer' defaultChecked />
@@ -136,7 +151,7 @@ const Deductions: React.FC = () => {
                     <button
                       className='btn btn-circle btn-sm btn-outline btn-secondary tooltip tooltip-right'
                       data-tip='Rename Deduction'
-                      onClick={() => handleRenameDeduction(index)}
+                      onClick={() => openRenameModal(index)}
                       disabled={isDisabled}
                     >
                       <CgRename
@@ -254,7 +269,7 @@ const Deductions: React.FC = () => {
 
           {/* ITEMIZED DEDUCTIONS */}
           {deductions && deductions.length > 0 && (
-            <div className='border rounded-3xl mb-2 p-6 mt-4 w-full max-w-sm'>
+            <div className='border-info border-2 rounded-3xl mb-2 p-6 mt-4 w-full max-w-sm'>
               {deductions.length > 0 && (
                 <div>
                   <div className='w-full flex flex-row items-center justify-between'>
@@ -315,6 +330,40 @@ const Deductions: React.FC = () => {
             </div>
           )}
         </>
+      )}
+
+      {/* Deduction Rename Modal */}
+      {isModalOpen && (
+        <dialog
+          id='rename_modal'
+          className='modal bg-primary bg-opacity-30'
+          open
+        >
+          <div className='modal-box rounded-xl'>
+            <h3 className='font-bold text-lg'>Rename Deduction</h3>
+            <input
+              type='text'
+              value={newDeductionName}
+              onChange={(e) => setNewDeductionName(e.target.value)}
+              className='input input-bordered input-primary border-primary w-full mt-4 rounded-full'
+              placeholder='Enter new name'
+            />
+            <div className='modal-action'>
+              <button
+                className='btn btn-primary text-white rounded-xl'
+                onClick={handleRenameDeduction}
+              >
+                Rename
+              </button>
+              <button
+                className='btn btn-primary btn-outline rounded-xl'
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </dialog>
       )}
     </>
   );
