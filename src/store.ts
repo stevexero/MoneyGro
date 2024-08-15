@@ -24,6 +24,9 @@ interface InputsState {
   deductions: Deduction[];
   totalDeductions: number;
   deductionsHidden: boolean;
+  isDeductionsRenameModalOpen: boolean;
+  currentDeductionIndex: number | null;
+  newDeductionName: string;
   distributableAmount: number;
   jarInputs: JarInputs;
   customJars: CustomJar[];
@@ -42,6 +45,11 @@ interface InputsState {
   removeDeduction: (index: number) => void;
   removeAllDeductions: () => void;
   setTotalDeductions: (initialAmt: number) => void;
+  setIsDeductionsRenameModalOpen: (
+    isDeductionsRenameModalOpen: boolean
+  ) => void;
+  setCurrentDeductionIndex: (index: number) => void;
+  setNewDeductionName: (newName: string) => void;
   setDistributableAmount: (amt: number) => void;
   setJarInputs: (name: string, value: string | number) => void;
   addCustomJar: () => void;
@@ -60,6 +68,9 @@ const useInputsStore = create<InputsState>((set) => ({
   deductions: [],
   totalDeductions: 0,
   deductionsHidden: false,
+  isDeductionsRenameModalOpen: false,
+  currentDeductionIndex: null,
+  newDeductionName: '',
   distributableAmount: 0,
   jarInputs: {
     dreams: 10,
@@ -163,6 +174,18 @@ const useInputsStore = create<InputsState>((set) => ({
 
   toggleDeductionsHidden: () =>
     set((state) => ({ deductionsHidden: !state.deductionsHidden })),
+
+  setIsDeductionsRenameModalOpen: (modalState) =>
+    set({
+      isDeductionsRenameModalOpen: modalState,
+    }),
+
+  setCurrentDeductionIndex: (index) =>
+    set({
+      currentDeductionIndex: index,
+    }),
+
+  setNewDeductionName: (newName) => set({ newDeductionName: newName }),
 
   setDistributableAmount: (amt) => set({ distributableAmount: amt }),
 
