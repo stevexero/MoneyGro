@@ -11,7 +11,7 @@ const DeductionsSummary: React.FC = () => {
   );
 
   return (
-    <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-6 w-full max-w-md'>
+    <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-4 w-full max-w-md'>
       <div className='card-body w-full flex flex-row justify-between items-center'>
         <div className='flex flex-row items-center flex-wrap'>
           <span>

@@ -5,6 +5,7 @@ import Jars from './components/jars/Jars';
 import CustomJars from './components/jars/CustomJars';
 import Necessities from './components/Necessities';
 import TotalDistributions from './components/TotalDistributions';
+import Presets from './components/Presets';
 
 const App: React.FC = () => {
   localStorage.setItem('umami.disabled', '1');
@@ -14,8 +15,9 @@ const App: React.FC = () => {
       <Navbar />
       <div className='container flex flex-col items-center mt-12'>
         <AnimatedInput />
+        <Presets />
 
-        <div className='mt-16 w-full flex flex-col items-center'>
+        <div className='mt-8 w-full flex flex-col items-center'>
           <Deductions />
 
           <div className='container w-full max-w-lg grid grid-cols-2 gap-4 mt-8'>
