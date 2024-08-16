@@ -6,6 +6,7 @@ import CustomJars from './components/jars/CustomJars';
 import Necessities from './components/Necessities';
 import TotalDistributions from './components/TotalDistributions';
 import Presets from './components/Presets';
+import Footer from './components/Footer';
 
 const App: React.FC = () => {
   localStorage.setItem('umami.disabled', '1');
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Necessities />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
