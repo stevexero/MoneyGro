@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import useInputsStore from './store';
 import Navbar from './components/Navbar';
 import AnimatedInput from './components/AnimatedInput';
 import Deductions from './components/deductions/Deductions';
@@ -9,7 +11,20 @@ import Presets from './components/Presets';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
-  localStorage.setItem('umami.disabled', '1');
+  const initializeAuth = useInputsStore((state) => state.initializeAuth);
+
+  useEffect(() => {
+    localStorage.setItem('umami.disabled', '1');
+    const initAuth = async () => {
+      try {
+        await initializeAuth();
+      } catch (error) {
+        console.error('Failed to initialize authentication:', error);
+      }
+    };
+
+    initAuth();
+  }, [initializeAuth]);
 
   return (
     <div className='container mx-auto px-4 md:px-0 overflow-x-hidden'>

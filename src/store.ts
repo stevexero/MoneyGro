@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { supabase } from './supabaseClient';
+import { Session } from '@supabase/supabase-js';
 
 interface Deduction {
   value: string | number;
@@ -31,6 +33,11 @@ interface InputsState {
   jarInputs: JarInputs;
   customJars: CustomJar[];
   necessities: number;
+
+  session: Session | null;
+  setSession: (session: Session | null) => void;
+  initializeAuth: () => Promise<void>;
+  signOut: () => Promise<void>;
 
   setinitialAmount: (amt: string | number) => void;
   addDeduction: () => void;
@@ -259,6 +266,26 @@ const useInputsStore = create<InputsState>((set) => ({
 
   // Necessities
   setNecessities: (amt) => set({ necessities: amt }),
+
+  // Auth states
+  session: null,
+  setSession: (session) => set({ session }),
+
+  initializeAuth: async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    set({ session });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      set({ session });
+    });
+  },
+
+  signOut: async () => {
+    await supabase.auth.signOut();
+    set({ session: null });
+  },
 }));
 
 export default useInputsStore;
