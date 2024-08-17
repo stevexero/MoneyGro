@@ -84,8 +84,14 @@ const Navbar: React.FC = () => {
             <h3 className='font-bold text-lg'>Log in to save</h3>
             <Auth
               supabaseClient={supabase}
-              appearance={{ theme: ThemeSupa }}
-              theme='light'
+              appearance={{
+                theme: ThemeSupa,
+                className: {
+                  button: 'btn btn-primary text-white rounded-2xl',
+                },
+              }}
+              theme='dark'
+              providers={['google']}
             />
             <div className='modal-action'>
               <button
