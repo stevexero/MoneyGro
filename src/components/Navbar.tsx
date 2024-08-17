@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
         </div>
         <div className='flex-1'>
           <h1 className='text-xl'>
-            &nbsp;Money<span className='text-secondary'>Gro.</span>
+            &nbsp;Money<span className='text-secondary'>Gro</span>.
           </h1>
         </div>
         <div className='flex-none'>
