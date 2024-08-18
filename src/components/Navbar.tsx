@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
+// import { ThemeSupa } from '@supabase/auth-ui-shared';
 import useInputsStore from '../store';
 import { supabase } from '../supabaseClient';
 import { GrMoney } from 'react-icons/gr';
