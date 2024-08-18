@@ -25,15 +25,17 @@ button:hover {
   display: none !important;
 }
 
-.supabase-auth-ui_ui-button {
+/* .supabase-auth-ui_ui-button { */
+.c-bOcPnF-iwjZXY-color-default {
   /* @apply mt-4 mb-4 max-w-xs self-center !important; */
+  @apply btn btn-primary text-white rounded-full;
   max-width: 20rem !important;
   margin-top: 1rem !important;
   margin-bottom: 1rem !important;
   align-self: center !important;
 }
 
-.supabase-auth-ui_ui-button:hover {
+.c-bOcPnF-iwjZXY-color-default:hover {
   /* @apply bg-primary opacity-90 !important; */
   --tw-bg-opacity: 1 !important;
   background-color: var(
@@ -45,9 +47,14 @@ button:hover {
 
 form .c-jTXIoq-bsgKCL-direction-vertical .supabase-auth-ui_ui-button {
   /* @apply mt-6 max-w-xs pt-5 pb-9 self-center !important; */
+  @apply btn btn-primary text-white rounded-full;
   max-width: 20rem !important;
   margin-top: 1.5rem !important;
   padding-top: 1.25rem !important;
   padding-bottom: 2.25rem !important;
   align-self: center !important;
+}
+
+.supabase-auth-ui_ui-input {
+  @apply input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black;
 }

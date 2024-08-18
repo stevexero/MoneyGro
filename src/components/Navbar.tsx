@@ -91,14 +91,14 @@ const Navbar: React.FC = () => {
             <h3 className='font-bold text-lg'>Sign in to save</h3>
             <Auth
               supabaseClient={supabase}
-              appearance={{
-                theme: ThemeSupa,
-                className: {
-                  button: 'btn btn-primary text-white rounded-full',
-                  input:
-                    'input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black',
-                },
-              }}
+              // appearance={{
+              //   theme: ThemeSupa,
+              //   className: {
+              //     button: 'btn btn-primary text-white rounded-full',
+              //     input:
+              //       'input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black',
+              //   },
+              // }}
               providers={['google']}
             />
             <div className='modal-action'>
