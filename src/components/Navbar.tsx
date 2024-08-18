@@ -13,8 +13,21 @@ const Navbar: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClick = () => {
+  const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const viewProfile = () => {
+    openModal();
+  };
+
+  const logout = () => {
+    closeModal();
+    signOut();
   };
 
   return (
@@ -32,22 +45,16 @@ const Navbar: React.FC = () => {
           {session ? (
             <div className='dropdown dropdown-end'>
               <button
-                className='btn btn-sm btn-primary text-white rounded-2xl'
-                onClick={handleClick}
+                className='btn btn-sm btn-primary btn-circle text-white'
+                onClick={viewProfile}
               >
                 <FaUser />
-                {session.user.email}
               </button>
-              <ul className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'>
-                <li>
-                  <button onClick={signOut}>Logout</button>
-                </li>
-              </ul>
             </div>
           ) : (
             <button
               className='btn btn-sm btn-primary text-white rounded-2xl'
-              onClick={handleClick}
+              onClick={openModal}
             >
               <RiSaveFill />
               Save
@@ -78,31 +85,63 @@ const Navbar: React.FC = () => {
       </nav>
 
       {/* Auth Modal */}
-      {isModalOpen && !session && (
+      {isModalOpen && !session ? (
         <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
           <div className='modal-box rounded-xl'>
-            <h3 className='font-bold text-lg'>Log in to save</h3>
+            <h3 className='font-bold text-lg'>Sign in to save</h3>
             <Auth
               supabaseClient={supabase}
               appearance={{
                 theme: ThemeSupa,
                 className: {
-                  button: 'btn btn-primary text-white rounded-2xl',
+                  button: 'btn btn-primary text-white rounded-full',
+                  input:
+                    'input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black',
                 },
               }}
-              theme='dark'
               providers={['google']}
             />
             <div className='modal-action'>
               <button
-                className='btn btn-primary btn-outline rounded-xl'
-                onClick={() => setIsModalOpen(false)}
+                className='btn btn-primary rounded-xl text-white'
+                onClick={logout}
               >
                 Close
               </button>
             </div>
           </div>
         </dialog>
+      ) : (
+        isModalOpen &&
+        session && (
+          <>
+            <dialog
+              id='auth_modal'
+              className='modal bg-primary bg-opacity-30'
+              open
+            >
+              <div className='modal-box rounded-xl'>
+                <h3 className='font-bold text-lg'>
+                  {session.user.email}'s profile
+                </h3>
+                <div className='modal-action'>
+                  <button
+                    className='btn btn-primary btn-outline text-white rounded-xl'
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                  <button
+                    className='btn btn-primary text-white rounded-xl'
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </dialog>
+          </>
+        )
       )}
     </>
   );

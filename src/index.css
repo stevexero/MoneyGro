@@ -16,6 +16,22 @@
   --animation-input: 0.2s !important;
 }
 
-/* .collapse-title {
-  position: static;
-} */
+button:hover {
+  color: white !important;
+}
+
+.supabase-auth-ui_ui-divider {
+  @apply hidden !important;
+}
+
+.supabase-auth-ui_ui-button {
+  @apply mt-4 mb-4 max-w-xs self-center !important;
+}
+
+.supabase-auth-ui_ui-button:hover {
+  @apply bg-primary opacity-90 !important;
+}
+
+form .c-jTXIoq-bsgKCL-direction-vertical .supabase-auth-ui_ui-button {
+  @apply mt-6 max-w-xs pt-5 pb-9 self-center !important;
+}
