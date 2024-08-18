@@ -51,5 +51,5 @@ form .c-jTXIoq-bsgKCL-direction-vertical .supabase-auth-ui_ui-button {
 }
 
 .supabase-auth-ui_ui-input {
-  @apply input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black !important;
+  @apply input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full bg-white text-black !important;
 }

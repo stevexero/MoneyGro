@@ -89,18 +89,7 @@ const Navbar: React.FC = () => {
         <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
           <div className='modal-box rounded-xl'>
             <h3 className='font-bold text-lg'>Sign in to save</h3>
-            <Auth
-              supabaseClient={supabase}
-              // appearance={{
-              //   theme: ThemeSupa,
-              //   className: {
-              //     button: 'btn btn-primary text-white rounded-full',
-              //     input:
-              //       'input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full text-black',
-              //   },
-              // }}
-              providers={['google']}
-            />
+            <Auth supabaseClient={supabase} providers={['google']} />
             <div className='modal-action'>
               <button
                 className='btn btn-primary rounded-xl text-white'
@@ -124,6 +113,23 @@ const Navbar: React.FC = () => {
                 <h3 className='font-bold text-lg'>
                   {session.user.email}'s profile
                 </h3>
+                <label
+                  htmlFor='distributions'
+                  className='label label-text-alt mt-4'
+                >
+                  Saved Distributions
+                </label>
+                <select
+                  id='distributions'
+                  className='select select-xs select-primary w-full'
+                >
+                  <option>Figure</option>
+                  <option>Out</option>
+                  <option>What</option>
+                  <option>To</option>
+                  <option>Put</option>
+                  <option>Here</option>
+                </select>
                 <div className='modal-action'>
                   <button
                     className='btn btn-primary btn-outline text-white rounded-xl'
