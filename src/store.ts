@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { supabase } from './supabaseClient';
+import { supaClient } from './supabaseClient';
 import { Session } from '@supabase/supabase-js';
 
 interface Deduction {
@@ -274,16 +274,16 @@ const useInputsStore = create<InputsState>((set) => ({
   initializeAuth: async () => {
     const {
       data: { session },
-    } = await supabase.auth.getSession();
+    } = await supaClient.auth.getSession();
     set({ session });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supaClient.auth.onAuthStateChange((_event, session) => {
       set({ session });
     });
   },
 
   signOut: async () => {
-    await supabase.auth.signOut();
+    await supaClient.auth.signOut();
     set({ session: null });
   },
 }));

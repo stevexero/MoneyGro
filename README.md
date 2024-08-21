@@ -1,4 +1,4 @@
-# Welcome to SixJarsMoney
+# Welcome to MoneyGro
 
 ## License
 

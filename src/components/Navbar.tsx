@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Auth } from '@supabase/auth-ui-react';
 // import { ThemeSupa } from '@supabase/auth-ui-shared';
 import useInputsStore from '../store';
-import { supabase } from '../supabaseClient';
+import { supaClient } from '../supabaseClient';
 import { GrMoney } from 'react-icons/gr';
 import { RiSaveFill } from 'react-icons/ri';
+// import { FaUser, FaRegUserCircle } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
 
 const Navbar: React.FC = () => {
@@ -30,6 +31,14 @@ const Navbar: React.FC = () => {
     signOut();
   };
 
+  const saveDistributions = () => {
+    console.log('saving');
+  };
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <>
       <nav className='navbar rounded-full'>
@@ -43,22 +52,31 @@ const Navbar: React.FC = () => {
         </div>
         <div className='flex-none'>
           {session ? (
-            <div className='dropdown dropdown-end'>
+            <>
               <button
-                className='btn btn-sm btn-primary btn-circle text-white'
+                className='btn btn-sm btn-primary text-white rounded-2xl'
+                onClick={saveDistributions}
+              >
+                <RiSaveFill />
+                Save
+              </button>
+              <button
+                className='btn btn-sm btn-primary btn-circle text-white ml-4'
                 onClick={viewProfile}
               >
                 <FaUser />
               </button>
-            </div>
+            </>
           ) : (
-            <button
-              className='btn btn-sm btn-primary text-white rounded-2xl'
-              onClick={openModal}
-            >
-              <RiSaveFill />
-              Save
-            </button>
+            <>
+              <button
+                className='btn btn-sm btn-primary text-white rounded-2xl'
+                onClick={openModal}
+              >
+                <RiSaveFill />
+                Save
+              </button>
+            </>
           )}
           <label className='swap swap-rotate ml-6'>
             <input
@@ -89,7 +107,7 @@ const Navbar: React.FC = () => {
         <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
           <div className='modal-box rounded-xl'>
             <h3 className='font-bold text-lg'>Sign in to save</h3>
-            <Auth supabaseClient={supabase} providers={['google']} />
+            <Auth supabaseClient={supaClient} providers={['google']} />
             <div className='modal-action'>
               <button
                 className='btn btn-primary rounded-xl text-white'
@@ -121,15 +139,44 @@ const Navbar: React.FC = () => {
                 </label>
                 <select
                   id='distributions'
-                  className='select select-xs select-primary w-full'
+                  className='select select-xs select-primary w-full rounded-xl'
                 >
+                  <option defaultChecked disabled>
+                    Select a Saved Distribution
+                  </option>
                   <option>Figure</option>
                   <option>Out</option>
                   <option>What</option>
                   <option>To</option>
                   <option>Put</option>
-                  <option>Here</option>
+                  <option>Add Distribution</option>
                 </select>
+                <div className='form-control flex flex-col'>
+                  <label
+                    htmlFor='prefered-theme'
+                    className='label label-text-alt mt-4'
+                  >
+                    Preferred Theme
+                  </label>
+                  <div
+                    id='preferred-theme'
+                    className=' flex flex-row items-center'
+                  >
+                    <input
+                      type='radio'
+                      name='preferred-theme'
+                      className='radio radio-primary'
+                      defaultChecked
+                    />
+                    <span className='label-text ml-4'>Light</span>
+                    <input
+                      type='radio'
+                      name='preferred-theme'
+                      className='radio radio-primary ml-6'
+                    />
+                    <span className='label-text ml-4'>Dark</span>
+                  </div>
+                </div>
                 <div className='modal-action'>
                   <button
                     className='btn btn-primary btn-outline text-white rounded-xl'
