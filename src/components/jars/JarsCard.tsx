@@ -27,11 +27,15 @@ const JarsCard: React.FC<JarsCardProps> = ({
 
   const jarInfo = useMemo(
     () => ({
-      freedom: 'This will hold the Freedom Jar info',
-      dreams: 'This will hold the Dreams Jar info',
-      generosity: 'This will hold the Generosity Jar info',
-      knowledge: 'This will hold the Knowledge Jar info',
-      joy: 'This will hold the Joy Jar info',
+      freedom:
+        'Dedicated to investments or savings that will generate passive income, helping you achieve financial independence',
+      dreams:
+        "Dedicated to larger, future expenses such as vacations, new gadgets, or other big-ticket items. It's a savings jar, but it's meant to be spent eventually",
+      generosity:
+        'Dedicated to charitable donations, gifts, or any form of giving back to others',
+      knowledge:
+        'Dedicated to self-improvement, courses, books, or any form of learning that can help you grow personally or professionally',
+      joy: "Dedicated to guilt-free spending on fun and entertainment, like dining out, movies, or hobbies. It's important to enjoy life, and this jar ensures you do so without feeling guilty",
     }),
     []
   );
@@ -99,6 +103,12 @@ const JarsCard: React.FC<JarsCardProps> = ({
             <h3 className='font-bold text-lg'>The {jarTitle} Jar</h3>
             <p className='py-4'>{jarDialog}</p>
             <div className='modal-action'>
+              <button
+                className='btn btn-primary text-white rounded-xl'
+                // onClick={() => setIsModalOpen(false)}
+              >
+                Learn More
+              </button>
               <button
                 className='btn btn-primary btn-outline rounded-xl'
                 onClick={() => setIsModalOpen(false)}
