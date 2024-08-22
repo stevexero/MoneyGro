@@ -8,6 +8,7 @@ import SignInModal from './modals/SignInModal';
 import ProfileModal from './modals/ProfileModal';
 import UsernameModal from './modals/UsernameModal';
 import useAuthStore from '../stores/authStore';
+import SignInSaveButton from './navbar/SignInSaveButton';
 
 const Navbar: React.FC = () => {
   const session = useAuthStore((state) => state.session);
@@ -17,12 +18,7 @@ const Navbar: React.FC = () => {
   const openModal = useModalStore((state) => state.openModal);
 
   const handleOpenSaveModal = () => {
-    if (session) {
-      console.log('logged in, saving');
-    } else {
-      console.log('logged out | not logged in');
-      openModal();
-    }
+    console.log('logged in, saving --');
   };
 
   const viewProfile = () => {
@@ -63,13 +59,7 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <button
-                className='btn btn-sm btn-primary text-white rounded-2xl'
-                onClick={handleOpenSaveModal}
-              >
-                <RiSaveFill />
-                Save
-              </button>
+              <SignInSaveButton />
             </>
           )}
           <label className='swap swap-rotate ml-6'>

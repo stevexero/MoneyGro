@@ -25,7 +25,9 @@ const router = createBrowserRouter([
 
 const App: React.FC = () => {
   useEffect(() => {
-    localStorage.setItem('umami.disabled', '1');
+    if (import.meta.env.VITE_ENVIRONMENT === 'development') {
+      localStorage.setItem('umami.disabled', '1');
+    }
   }, []);
 
   return <RouterProvider router={router} />;

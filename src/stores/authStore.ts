@@ -11,12 +11,14 @@ interface AuthState {
     profile: UserProfile | null;
     channel: RealtimeChannel | null;
     isUsernameSet: boolean;
+    isReturningUser: boolean;
     
     initializeAuth: () => Promise<void>;
     signOut: () => Promise<void>;
     setIsUsernameSetTrue: () => void;
     setIsUsernameSetFalse: () => void;
     getUserProfile: () => Promise<void>;
+    setIsReturningUser: () => void;
 }
 
 const useAuthStore = create<AuthState>((set, get) => ({
@@ -24,6 +26,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     profile: null,
     channel: null,
     isUsernameSet: false,
+    isReturningUser: false,
 
     initializeAuth: async () => {
         const { data: { session } } = await supaClient.auth.getSession();
@@ -103,6 +106,8 @@ const useAuthStore = create<AuthState>((set, get) => ({
             
         }
     },
+
+    setIsReturningUser: () => set({ isReturningUser: true})
 }));
 
 export default useAuthStore;

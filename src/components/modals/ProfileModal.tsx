@@ -17,6 +17,10 @@ const ProfileModal = () => {
     getUserProfile();
   }, [getUserProfile]);
 
+  useEffect(() => {
+    localStorage.setItem('moneygro-return-user', 'Thanku<3');
+  });
+
   return (
     <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
       <div className='modal-box rounded-xl'>
