@@ -4,11 +4,16 @@ import {
   FaGithubAlt,
   FaGlobe,
 } from 'react-icons/fa6';
+import { IoHome } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <footer className='footer footer-center sm:flex sm:flex-row sm:justify-evenly p-10'>
       <nav className='grid grid-flow-col gap-4'>
+        <Link to='/' className='link link-hover'>
+          <IoHome size='1.4rem' />
+        </Link>
         <a className='link link-hover'>About MoneyGro</a>
         <a className='link link-hover'>Contact</a>
       </nav>

@@ -1,10 +1,12 @@
-import useInputsStore from '../store';
+import useInputsStore from '../stores/initialAmountStore';
+import useDeductionStore from '../stores/deductionStore';
+import useJarStore from '../stores/jarStore';
 
 const TotalDistributions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const jarInputs = useInputsStore((state) => state.jarInputs);
-  const customJars = useInputsStore((state) => state.customJars);
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
+  const jarInputs = useJarStore((state) => state.jarInputs);
+  const customJars = useJarStore((state) => state.customJars);
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
 
   const totalPercentage =
     jarInputs.dreams +

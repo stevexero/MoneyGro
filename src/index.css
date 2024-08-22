@@ -20,6 +20,10 @@ button:hover {
   color: white !important;
 }
 
+#add-deduction-button:hover {
+  color: black !important;
+}
+
 .supabase-auth-ui_ui-divider {
   display: none !important;
 }

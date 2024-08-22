@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import useInputsStore from '../store';
+import useInputsStore from '../stores/initialAmountStore';
+import useJarStore from '../stores/jarStore';
+import useDeductionStore from '../stores/deductionStore';
 
 const Necessities: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
-  const jarInputs = useInputsStore((state) => state.jarInputs);
-  const customJars = useInputsStore((state) => state.customJars);
-  const necessities = useInputsStore((state) => state.necessities);
-  const setNecessities = useInputsStore((state) => state.setNecessities);
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
+  const jarInputs = useJarStore((state) => state.jarInputs);
+  const customJars = useJarStore((state) => state.customJars);
+  const necessities = useJarStore((state) => state.necessities);
+  const setNecessities = useJarStore((state) => state.setNecessities);
 
   const initialAmt =
     typeof initialAmount === 'string'

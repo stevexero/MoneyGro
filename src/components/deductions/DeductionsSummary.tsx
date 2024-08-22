@@ -1,12 +1,12 @@
 import { FaEye } from 'react-icons/fa';
-import useInputsStore from '../../store';
+import useDeductionStore from '../../stores/deductionStore';
 
 const DeductionsSummary: React.FC = () => {
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
-  const distributableAmount = useInputsStore(
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
+  const distributableAmount = useDeductionStore(
     (state) => state.distributableAmount
   );
-  const toggleDeductionsHidden = useInputsStore(
+  const toggleDeductionsHidden = useDeductionStore(
     (state) => state.toggleDeductionsHidden
   );
 

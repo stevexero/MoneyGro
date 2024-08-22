@@ -1,14 +1,15 @@
 import { FaEyeSlash } from 'react-icons/fa';
-import useInputsStore from '../../store';
+import useInputsStore from '../../stores/initialAmountStore';
+import useDeductionStore from '../../stores/deductionStore';
 
 const ItemizedDeductions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const deductions = useInputsStore((state) => state.deductions);
-  const toggleDeductionsHidden = useInputsStore(
+  const deductions = useDeductionStore((state) => state.deductions);
+  const toggleDeductionsHidden = useDeductionStore(
     (state) => state.toggleDeductionsHidden
   );
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
-  const distributableAmount = useInputsStore(
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
+  const distributableAmount = useDeductionStore(
     (state) => state.distributableAmount
   );
 

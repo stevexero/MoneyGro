@@ -1,12 +1,12 @@
 import { GrAdd } from 'react-icons/gr';
 import CustomJarCard from './CustomJarCard';
-import useInputsStore from '../../store';
 import { validatePercentage } from '../../utils/validation';
+import useJarStore from '../../stores/jarStore';
 
 const CustomJars = () => {
-  const customJars = useInputsStore((state) => state.customJars);
-  const addCustomJar = useInputsStore((state) => state.addCustomJar);
-  const updateCustomJar = useInputsStore((state) => state.updateCustomJar);
+  const customJars = useJarStore((state) => state.customJars);
+  const addCustomJar = useJarStore((state) => state.addCustomJar);
+  const updateCustomJar = useJarStore((state) => state.updateCustomJar);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,

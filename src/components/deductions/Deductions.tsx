@@ -1,12 +1,12 @@
-import useInputsStore from '../../store';
 import DeductionsSummary from './DeductionsSummary';
 import ItemizedDeductions from './ItemizedDeductions';
 import DeductionRenameModal from './DeductionRenameModal';
 import AddDeductionButton from './AddDeductionButton';
 import DeductionsCard from './DeductionsCard';
+import useDeductionStore from '../../stores/deductionStore';
 
 const Deductions: React.FC = () => {
-  const deductionsHidden = useInputsStore((state) => state.deductionsHidden);
+  const deductionsHidden = useDeductionStore((state) => state.deductionsHidden);
   return (
     <>
       {deductionsHidden ? (

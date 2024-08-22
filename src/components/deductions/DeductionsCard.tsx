@@ -3,31 +3,32 @@ import { CgRename } from 'react-icons/cg';
 import { TbLockDollar } from 'react-icons/tb';
 import { FaPercent } from 'react-icons/fa6';
 import { FaTimes } from 'react-icons/fa';
-import useInputsStore from '../../store';
+import useInputsStore from '../../stores/initialAmountStore';
 import { validateDecimal } from '../../utils/validation';
+import useDeductionStore from '../../stores/deductionStore';
 
 const DeductionsCard: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const deductions = useInputsStore((state) => state.deductions);
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
-  const setTotalDeductions = useInputsStore(
+  const deductions = useDeductionStore((state) => state.deductions);
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
+  const setTotalDeductions = useDeductionStore(
     (state) => state.setTotalDeductions
   );
-  const updateDeduction = useInputsStore((state) => state.updateDeduction);
-  const toggleDeductionType = useInputsStore(
+  const updateDeduction = useDeductionStore((state) => state.updateDeduction);
+  const toggleDeductionType = useDeductionStore(
     (state) => state.toggleDeductionType
   );
-  const removeDeduction = useInputsStore((state) => state.removeDeduction);
-  const setCurrentDeductionIndex = useInputsStore(
+  const removeDeduction = useDeductionStore((state) => state.removeDeduction);
+  const setCurrentDeductionIndex = useDeductionStore(
     (state) => state.setCurrentDeductionIndex
   );
-  const setDistributableAmount = useInputsStore(
+  const setDistributableAmount = useDeductionStore(
     (state) => state.setDistributableAmount
   );
-  const setIsDeductionsRenameModalOpen = useInputsStore(
+  const setIsDeductionsRenameModalOpen = useDeductionStore(
     (state) => state.setIsDeductionsRenameModalOpen
   );
-  const setNewDeductionName = useInputsStore(
+  const setNewDeductionName = useDeductionStore(
     (state) => state.setNewDeductionName
   );
 

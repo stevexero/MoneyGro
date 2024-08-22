@@ -1,23 +1,20 @@
-// import { useState } from 'react';
-import useInputsStore from '../../store';
+import useDeductionStore from '../../stores/deductionStore';
 
 const DeductionRenameModal: React.FC = () => {
-  const isDeductionsRenameModalOpen = useInputsStore(
+  const isDeductionsRenameModalOpen = useDeductionStore(
     (state) => state.isDeductionsRenameModalOpen
   );
-  const renameDeduction = useInputsStore((state) => state.renameDeduction);
-  const setIsDeductionsRenameModalOpen = useInputsStore(
+  const renameDeduction = useDeductionStore((state) => state.renameDeduction);
+  const setIsDeductionsRenameModalOpen = useDeductionStore(
     (state) => state.setIsDeductionsRenameModalOpen
   );
-  const currentDeductionIndex = useInputsStore(
+  const currentDeductionIndex = useDeductionStore(
     (state) => state.currentDeductionIndex
   );
-  const newDeductionName = useInputsStore((state) => state.newDeductionName);
-  const setNewDeductionName = useInputsStore(
+  const newDeductionName = useDeductionStore((state) => state.newDeductionName);
+  const setNewDeductionName = useDeductionStore(
     (state) => state.setNewDeductionName
   );
-
-  //   const [newDeductionName, setNewDeductionName] = useState('');
 
   const handleRenameDeduction = () => {
     if (currentDeductionIndex !== null && newDeductionName) {

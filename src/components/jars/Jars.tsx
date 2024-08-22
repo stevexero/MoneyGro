@@ -1,10 +1,10 @@
 import JarsCard from './JarsCard';
-import useInputsStore from '../../store';
 import { validatePercentage } from '../../utils/validation';
+import useJarStore from '../../stores/jarStore';
 
 const Jars: React.FC = () => {
-  const jarInputs = useInputsStore((state) => state.jarInputs);
-  const setJarInputs = useInputsStore((state) => state.setJarInputs);
+  const jarInputs = useJarStore((state) => state.jarInputs);
+  const setJarInputs = useJarStore((state) => state.setJarInputs);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

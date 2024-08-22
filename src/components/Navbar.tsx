@@ -1,43 +1,37 @@
-import { useEffect, useState } from 'react';
-import { Auth } from '@supabase/auth-ui-react';
-// import { ThemeSupa } from '@supabase/auth-ui-shared';
-import useInputsStore from '../store';
-import { supaClient } from '../supabaseClient';
+import { useEffect } from 'react';
+import useModalStore from '../stores/modalStore';
 import { GrMoney } from 'react-icons/gr';
 import { RiSaveFill } from 'react-icons/ri';
-// import { FaUser, FaRegUserCircle } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import SignInModal from './modals/SignInModal';
+import ProfileModal from './modals/ProfileModal';
+import UsernameModal from './modals/UsernameModal';
+import useAuthStore from '../stores/authStore';
 
 const Navbar: React.FC = () => {
-  const session = useInputsStore((state) => state.session);
-  const signOut = useInputsStore((state) => state.signOut);
+  const session = useAuthStore((state) => state.session);
+  const isUsernameSet = useAuthStore((state) => state.isUsernameSet);
+  const getUserProfile = useAuthStore((state) => state.getUserProfile);
+  const isModalOpen = useModalStore((state) => state.isModalOpen);
+  const openModal = useModalStore((state) => state.openModal);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleOpenSaveModal = () => {
+    if (session) {
+      console.log('logged in, saving');
+    } else {
+      console.log('logged out | not logged in');
+      openModal();
+    }
   };
 
   const viewProfile = () => {
     openModal();
   };
 
-  const logout = () => {
-    closeModal();
-    signOut();
-  };
-
-  const saveDistributions = () => {
-    console.log('saving');
-  };
-
   useEffect(() => {
-    console.log(session);
-  }, [session]);
+    getUserProfile();
+  }, [getUserProfile]);
 
   return (
     <>
@@ -46,16 +40,16 @@ const Navbar: React.FC = () => {
           <GrMoney size='1.5rem' />
         </div>
         <div className='flex-1'>
-          <h1 className='text-xl'>
+          <Link to='/' className='text-xl'>
             &nbsp;Money<span className='text-secondary'>Gro</span>.
-          </h1>
+          </Link>
         </div>
         <div className='flex-none'>
           {session ? (
             <>
               <button
                 className='btn btn-sm btn-primary text-white rounded-2xl'
-                onClick={saveDistributions}
+                onClick={handleOpenSaveModal}
               >
                 <RiSaveFill />
                 Save
@@ -71,7 +65,7 @@ const Navbar: React.FC = () => {
             <>
               <button
                 className='btn btn-sm btn-primary text-white rounded-2xl'
-                onClick={openModal}
+                onClick={handleOpenSaveModal}
               >
                 <RiSaveFill />
                 Save
@@ -103,98 +97,15 @@ const Navbar: React.FC = () => {
       </nav>
 
       {/* Auth Modal */}
-      {isModalOpen && !session ? (
-        <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
-          <div className='modal-box rounded-xl'>
-            <h3 className='font-bold text-lg'>Sign in to save</h3>
-            <Auth supabaseClient={supaClient} providers={['google']} />
-            <div className='modal-action'>
-              <button
-                className='btn btn-primary rounded-xl text-white'
-                onClick={logout}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </dialog>
+      {/* If modal is open and there is no user signed in */}
+      {isModalOpen && !session?.user ? (
+        <SignInModal />
+      ) : // If modal is open and there is a user WITH a username
+      isModalOpen && session?.user && isUsernameSet ? (
+        <ProfileModal />
       ) : (
-        isModalOpen &&
-        session && (
-          <>
-            <dialog
-              id='auth_modal'
-              className='modal bg-primary bg-opacity-30'
-              open
-            >
-              <div className='modal-box rounded-xl'>
-                <h3 className='font-bold text-lg'>
-                  {session.user.email}'s profile
-                </h3>
-                <label
-                  htmlFor='distributions'
-                  className='label label-text-alt mt-4'
-                >
-                  Saved Distributions
-                </label>
-                <select
-                  id='distributions'
-                  className='select select-xs select-primary w-full rounded-xl'
-                >
-                  <option defaultChecked disabled>
-                    Select a Saved Distribution
-                  </option>
-                  <option>Figure</option>
-                  <option>Out</option>
-                  <option>What</option>
-                  <option>To</option>
-                  <option>Put</option>
-                  <option>Add Distribution</option>
-                </select>
-                <div className='form-control flex flex-col'>
-                  <label
-                    htmlFor='prefered-theme'
-                    className='label label-text-alt mt-4'
-                  >
-                    Preferred Theme
-                  </label>
-                  <div
-                    id='preferred-theme'
-                    className=' flex flex-row items-center'
-                  >
-                    <input
-                      type='radio'
-                      name='preferred-theme'
-                      className='radio radio-primary'
-                      defaultChecked
-                    />
-                    <span className='label-text ml-4'>Light</span>
-                    <input
-                      type='radio'
-                      name='preferred-theme'
-                      className='radio radio-primary ml-6'
-                    />
-                    <span className='label-text ml-4'>Dark</span>
-                  </div>
-                </div>
-                <div className='modal-action'>
-                  <button
-                    className='btn btn-primary btn-outline text-white rounded-xl'
-                    onClick={logout}
-                  >
-                    Logout
-                  </button>
-                  <button
-                    className='btn btn-primary text-white rounded-xl'
-                    onClick={closeModal}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </dialog>
-          </>
-        )
+        // If modal is open and there is a user WITHOUT a username
+        isModalOpen && session?.user && !isUsernameSet && <UsernameModal />
       )}
     </>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FaPercent, FaInfo } from 'react-icons/fa6';
-import useInputsStore from '../../store';
+import useInputsStore from '../../stores/initialAmountStore';
+import useDeductionStore from '../../stores/deductionStore';
 
 interface JarsCardProps {
   jarId: string;
@@ -18,7 +19,7 @@ const JarsCard: React.FC<JarsCardProps> = ({
   handleJarPercentageChange,
 }) => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [jarName, setJarName] = useState('');

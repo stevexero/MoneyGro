@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { FaPercent } from 'react-icons/fa6';
-import useInputsStore from '../../store';
+import useInputsStore from '../../stores/initialAmountStore';
 import { CgRename } from 'react-icons/cg';
 import { GrClose } from 'react-icons/gr';
+import useJarStore from '../../stores/jarStore';
+import useDeductionStore from '../../stores/deductionStore';
 
 interface CustomJarCardProps {
   jarIndex: number;
@@ -22,10 +24,10 @@ const CustomJarCard: React.FC<CustomJarCardProps> = ({
   handleJarPercentageChange,
 }) => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const totalDeductions = useInputsStore((state) => state.totalDeductions);
-  const customJars = useInputsStore((state) => state.customJars);
-  const renameCustomJar = useInputsStore((state) => state.renameCustomJar);
-  const removeCustomJar = useInputsStore((state) => state.removeCustomJar);
+  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
+  const customJars = useJarStore((state) => state.customJars);
+  const renameCustomJar = useJarStore((state) => state.renameCustomJar);
+  const removeCustomJar = useJarStore((state) => state.removeCustomJar);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomJarIndex, setCurrentCustomJarIndex] = useState<

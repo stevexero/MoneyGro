@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
 import { GrClose } from 'react-icons/gr';
-import useInputsStore from '../store';
+import useInputsStore from '../stores/initialAmountStore';
+import useDeductionStore from '../stores/deductionStore';
 
 const AnimatedInput: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const setinitialAmount = useInputsStore((state) => state.setinitialAmount);
-  const removeAllDeductions = useInputsStore(
+  const removeAllDeductions = useDeductionStore(
     (state) => state.removeAllDeductions
   );
-  const deductionsHidden = useInputsStore((state) => state.deductionsHidden);
-  const toggleDeductionsHidden = useInputsStore(
+  const deductionsHidden = useDeductionStore((state) => state.deductionsHidden);
+  const toggleDeductionsHidden = useDeductionStore(
     (state) => state.toggleDeductionsHidden
   );
 
