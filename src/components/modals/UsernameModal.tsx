@@ -3,12 +3,15 @@ import { supaClient } from '../../supabaseClient';
 import {
   validateDecimal,
   validatePercentage,
+  validateSettingsName,
   validateUsername,
 } from '../../utils/validation';
 import useModalStore from '../../stores/modalStore';
 import useAuthStore from '../../stores/authStore';
 import useJarStore from '../../stores/jarStore';
 import useDeductionStore from '../../stores/deductionStore';
+import useThemeStore from '../../stores/themeStore';
+// import useSettingsStore from '../../stores/settingsStore';
 
 const UsernameModal = () => {
   const session = useAuthStore((state) => state.session);
@@ -20,13 +23,24 @@ const UsernameModal = () => {
   const updateCustomJar = useJarStore((state) => state.updateCustomJar);
   const deductions = useDeductionStore((state) => state.deductions);
   const updateDeduction = useDeductionStore((state) => state.updateDeduction);
+  const theme = useThemeStore((state) => state.theme);
+  const setTheme = useThemeStore((state) => state.setTheme);
+  //   const settingsName = useSettingsStore((state) => state.settingsName);
+  //   const setSettingsName = useSettingsStore((state) => state.setSettingsName);
 
   const [usernameText, setUsernameText] = useState('');
+  const [settingsText, setSettingsText] = useState('');
   const [serverError, setServerError] = useState('');
+  const [settingsServerError, setSettingsServerError] = useState('');
   const [formIsDirty, setFormIsDirty] = useState(false);
+  const [settingsFormIsDirty, setSettingsFormIsDirty] = useState(false);
   const invalidString = useMemo(
     () => validateUsername(usernameText),
     [usernameText]
+  );
+  const invalidSettingsString = useMemo(
+    () => validateSettingsName(settingsText),
+    [settingsText]
   );
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -79,6 +93,10 @@ const UsernameModal = () => {
     }
   };
 
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTheme(event.target.value);
+  };
+
   useEffect(() => {
     getUserProfile();
   }, [getUserProfile]);
@@ -91,7 +109,10 @@ const UsernameModal = () => {
     <dialog id='auth_modal' className='modal bg-primary bg-opacity-30' open>
       <div className='modal-box rounded-xl'>
         <h3 className='font-bold text-lg'>Welcome to MoneyGro!</h3>
-        <p className='mt-4'>Let's get started by creating a username:</p>
+        <p className='mt-4 font-bold'>
+          Let's get started by creating a username:
+          <span className='text-error'>*</span>
+        </p>
         <form className='welcome-name-form mt-4' onSubmit={handleSubmit}>
           <input
             name='username'
@@ -105,16 +126,17 @@ const UsernameModal = () => {
                 setServerError('');
               }
             }}
-            className='input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full shadow-2xl focus:shadow-2xl'
+            className='input input-lg input-bordered border-4 input-primary w-full max-w-lg rounded-full'
           ></input>
           {formIsDirty && (invalidString || serverError) && (
-            <p className='welcome-form-error-message validation-feedback'>
-              {serverError || invalidString}
+            <p className='text-error text-sm text-center mt-2'>
+              *{serverError || invalidString}
             </p>
           )}
           <p className='mt-8'>Save the following to your profile:</p>
+          {/* Jars */}
           <p className='mt-4 font-bold'>Standard Jars:</p>
-          <div className='w-full grid sm:grid-cols-2 gap-4'>
+          <div className='w-full grid sm:grid-cols-2 gap-4 mt-4'>
             {/* Freedom */}
             <div className='flex flex-row items-center justify-between'>
               <label className='mr-4' htmlFor='freedom'>
@@ -217,8 +239,15 @@ const UsernameModal = () => {
             </div>
           </div>
           {/* Custom Jars */}
-          <p className='mt-4 font-bold'>Custom Jars:</p>
-          <div className='w-full grid sm:grid-cols-2 gap-4'>
+          <p className='mt-8 font-bold'>
+            Custom Jars:{' '}
+            {customJars.length <= 0 && (
+              <span className='font-normal'>No Custom Jars Set</span>
+            )}
+          </p>
+          <div
+            className={`w-full grid sm:grid-cols-2 gap-4 ${customJars.length > 0 && 'mt-4'}`}
+          >
             {customJars.map((jar, index) => (
               <div
                 key={index}
@@ -232,7 +261,6 @@ const UsernameModal = () => {
                     type='number'
                     className='input input-sm input-primary rounded-lg text-right'
                     name='value'
-                    // id={jar.name}
                     value={jar.value === 0 ? '' : jar.value}
                     onChange={(event) => handleCustomJarChange(event, index)}
                     min={0}
@@ -245,8 +273,15 @@ const UsernameModal = () => {
             ))}
           </div>
           {/* Deductions */}
-          <p className='mt-4 font-bold'>Deductions:</p>
-          <div className='w-full grid sm:grid-cols-2 gap-4'>
+          <p className='mt-8 font-bold'>
+            Deductions:{' '}
+            {deductions.length <= 0 && (
+              <span className='font-normal'>No Deductions Set</span>
+            )}
+          </p>
+          <div
+            className={`w-full grid sm:grid-cols-2 gap-4 ${deductions.length > 0 && 'mt-4'}`}
+          >
             {deductions.map((deduction, index) => (
               <div
                 key={index}
@@ -260,7 +295,6 @@ const UsernameModal = () => {
                     type='number'
                     className='input input-sm input-primary rounded-lg text-right'
                     name='value'
-                    // id={deduction.name}
                     value={deduction.value === 0 ? '' : deduction.value}
                     onChange={(event) => handleDeductionChange(event, index)}
                     min={0}
@@ -272,11 +306,57 @@ const UsernameModal = () => {
               </div>
             ))}
           </div>
+          {/* Preferred Theme */}
+          <p className='mt-8 font-bold'>Preferred Theme:</p>
+          <div className=' flex flex-row items-center mt-4'>
+            <input
+              type='radio'
+              name='preferred-theme'
+              className='radio radio-primary theme-controller'
+              value='light'
+              checked={theme === 'light'}
+              onChange={handleThemeChange}
+            />
+            <span className='label-text ml-4'>Light</span>
+            <input
+              type='radio'
+              name='preferred-theme'
+              className='radio radio-primary theme-controller ml-6'
+              value='synthwave'
+              checked={theme === 'synthwave'}
+              onChange={handleThemeChange}
+            />
+            <span className='label-text ml-4'>Dark</span>
+          </div>
+          {/* Name Settings */}
+          <p className='mt-8 font-bold'>
+            Set a name for your settings:<span className='text-error'>*</span>
+          </p>
+          <input
+            name='userSettings'
+            placeholder='Settings Name'
+            onChange={({ target }) => {
+              setSettingsText(target.value);
+              if (!settingsFormIsDirty) {
+                setSettingsFormIsDirty(true);
+              }
+              if (settingsServerError) {
+                setSettingsServerError('');
+              }
+            }}
+            className='input input-md input-bordered border-2 input-primary w-full max-w-lg rounded-full mt-4'
+          ></input>
+          {settingsFormIsDirty &&
+            (invalidSettingsString || settingsServerError) && (
+              <p className='text-error text-sm text-center mt-2'>
+                *{settingsServerError || invalidSettingsString}
+              </p>
+            )}
           <div className='modal-action'>
             <button
               type='submit'
               className='btn btn-primary btn-outline text-white rounded-xl'
-              disabled={invalidString != null}
+              disabled={invalidString != null && invalidSettingsString != null}
             >
               Save My Profile
             </button>

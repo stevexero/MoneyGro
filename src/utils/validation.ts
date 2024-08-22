@@ -24,3 +24,13 @@ export const validateUsername = (username: string): string | undefined => {
   }
   return undefined;
 }
+
+export const validateSettingsName = (settingsName: string): string | undefined => {
+  if (!settingsName) {
+    return "Setting name is required";
+  }
+  if (settingsName.length < 4) {
+    return "Setting name must be at least 4 characters long";
+  }
+  return undefined;
+}
