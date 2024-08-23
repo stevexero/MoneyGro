@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 import useAuthStore from '../../stores/authStore';
 import useModalStore from '../../stores/modalStore';
+import useSettingsStore from '../../stores/settingsStore';
 
 const ProfileModal = () => {
   const profile = useAuthStore((state) => state.profile);
   const signOut = useAuthStore((state) => state.signOut);
   const getUserProfile = useAuthStore((state) => state.getUserProfile);
   const closeModal = useModalStore((state) => state.closeModal);
+  const allocations = useSettingsStore((state) => state.allocations);
+  const getAllocations = useSettingsStore((state) => state.getAllocations);
+  const clearAllocations = useSettingsStore((state) => state.clearAllocations);
 
   const logout = () => {
     signOut();
@@ -16,6 +20,13 @@ const ProfileModal = () => {
   useEffect(() => {
     getUserProfile();
   }, [getUserProfile]);
+
+  useEffect(() => {
+    if (profile) {
+      clearAllocations();
+      getAllocations();
+    }
+  }, [profile, getAllocations, clearAllocations]);
 
   useEffect(() => {
     localStorage.setItem('moneygro-return-user', 'Thanku<3');
@@ -32,14 +43,10 @@ const ProfileModal = () => {
           id='distributions'
           className='select select-xs select-primary w-full rounded-xl'
         >
-          <option defaultChecked disabled>
-            Select a Saved Distribution
-          </option>
-          <option>Figure</option>
-          <option>Out</option>
-          <option>What</option>
-          <option>To</option>
-          <option>Put</option>
+          <option defaultChecked>Select a Saved Distribution</option>
+          {allocations.map((allocation, index) => (
+            <option key={index}>{allocation.name}</option>
+          ))}
           <option>Add Distribution</option>
         </select>
         <div className='form-control flex flex-col'>

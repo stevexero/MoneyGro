@@ -11,7 +11,7 @@ import useAuthStore from '../../stores/authStore';
 import useJarStore from '../../stores/jarStore';
 import useDeductionStore from '../../stores/deductionStore';
 import useThemeStore from '../../stores/themeStore';
-// import useSettingsStore from '../../stores/settingsStore';
+import useSettingsStore from '../../stores/settingsStore';
 
 const UsernameModal = () => {
   const session = useAuthStore((state) => state.session);
@@ -25,8 +25,7 @@ const UsernameModal = () => {
   const updateDeduction = useDeductionStore((state) => state.updateDeduction);
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
-  //   const settingsName = useSettingsStore((state) => state.settingsName);
-  //   const setSettingsName = useSettingsStore((state) => state.setSettingsName);
+  const addAllocation = useSettingsStore((state) => state.addAllocation);
 
   const [usernameText, setUsernameText] = useState('');
   const [settingsText, setSettingsText] = useState('');
@@ -34,6 +33,7 @@ const UsernameModal = () => {
   const [settingsServerError, setSettingsServerError] = useState('');
   const [formIsDirty, setFormIsDirty] = useState(false);
   const [settingsFormIsDirty, setSettingsFormIsDirty] = useState(false);
+
   const invalidString = useMemo(
     () => validateUsername(usernameText),
     [usernameText]
@@ -43,19 +43,83 @@ const UsernameModal = () => {
     [settingsText]
   );
 
+  //   const handleSubmit = async (event: React.FormEvent) => {
+  //     event.preventDefault();
+
+  //     if (invalidString) {
+  //       setServerError(invalidString);
+  //       return;
+  //     }
+
+  //     if (invalidSettingsString) {
+  //       setSettingsServerError(invalidSettingsString);
+  //       return;
+  //     }
+
+  //     const { error: userProfileError } = await supaClient
+  //       .from('user_profiles')
+  //       .insert({
+  //         user_id: session?.user.id || '',
+  //         username: usernameText,
+  //       });
+
+  //     if (userProfileError) {
+  //       setServerError(`Username "${usernameText}" is already taken`);
+  //       return;
+  //     }
+
+  //     addAllocation(settingsText);
+
+  //     closeModal();
+  //   };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { error } = await supaClient.from('user_profiles').insert([
-      {
+
+    if (invalidString) {
+      setServerError(invalidString);
+      return;
+    }
+
+    if (invalidSettingsString) {
+      setSettingsServerError(invalidSettingsString);
+      return;
+    }
+
+    await createUserProfile();
+  };
+
+  const createUserProfile = async () => {
+    const { error: userProfileError } = await supaClient
+      .from('user_profiles')
+      .insert({
         user_id: session?.user.id || '',
         username: usernameText,
-      },
-    ]);
+      });
 
-    if (error) {
+    if (userProfileError) {
       setServerError(`Username "${usernameText}" is already taken`);
     } else {
+      await addAnAllocation(settingsText);
       closeModal();
+    }
+  };
+
+  const addAnAllocation = async (allocationName: string) => {
+    const { error: insertError } = await supaClient
+      .from('user_settings')
+      .insert({
+        user_id: session?.user.id || '',
+        settings_name: allocationName,
+        allocation_settings: [],
+      });
+
+    addAllocation(allocationName);
+
+    if (insertError) {
+      setSettingsServerError(
+        `Allocation "${allocationName}" could not be added.`
+      );
     }
   };
 

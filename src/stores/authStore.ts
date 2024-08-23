@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { supaClient } from "../supabaseClient";
 import { Session, RealtimeChannel } from '@supabase/supabase-js';
+import useSettingsStore from "./settingsStore";
 
 interface UserProfile {
+    user_id: string,
     username: string;
 }
   
@@ -32,25 +34,44 @@ const useAuthStore = create<AuthState>((set, get) => ({
         const { data: { session } } = await supaClient.auth.getSession();
         set({ session });
 
-        // Listen to auth state changes
         supaClient.auth.onAuthStateChange((_event, session) => {
             set({ session, profile: null });
         });
 
-        // Fetch profile data if session exists
         if (session?.user) {
-            const { data } = await supaClient
+            const { data: profileData } = await supaClient
                 .from('user_profiles')
                 .select('*')
                 .eq('user_id', session.user.id)
                 .single();
 
-            if (data) {
-                set({ profile: data });
+            if (profileData) {
+                set({ profile: profileData });
                 set({ isUsernameSet: true });
             }
 
-            // Listen for profile changes
+            const { data: settingsData, error: settingsError } = await supaClient
+                .from('user_settings')
+                .select('*')
+                .eq('user_id', session.user.id)
+                .single();
+
+            if (!settingsData && !settingsError) {
+                const { error: insertError } = await supaClient
+                    .from('user_settings')
+                    .insert({
+                        user_id: session.user.id,
+                        settings_name: 'default',
+                        allocation_settings: [],
+                    });
+
+                if (insertError) {
+                    console.error("Error initializing user settings:", insertError.message);
+                }
+            } else if (settingsError) {
+                console.error("Error fetching user settings:", settingsError.message);
+            }
+
             const newChannel = supaClient
                 .channel(`public:user_profiles`)
                 .on(
@@ -74,6 +95,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     signOut: async () => {
         await supaClient.auth.signOut();
         set({ session: null, profile: null, isUsernameSet: false });
+        useSettingsStore.getState().clearAllocations();
     },
 
     setIsUsernameSetTrue: () => set({ isUsernameSet: true }),

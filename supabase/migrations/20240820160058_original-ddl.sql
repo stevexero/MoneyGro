@@ -22,3 +22,35 @@ AS PERMISSIVE FOR UPDATE
 TO public
 USING (auth.uid() = user_id)
 WITH CHECK (auth.uid() = user_id);
+
+create table user_settings (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id uuid REFERENCES auth.users (id) not null,
+    settings_name text not null,
+    allocation_settings text[] DEFAULT '{}',
+    created_at timestamp with time zone DEFAULT now(),
+    updated_at timestamp with time zone DEFAULT now()
+);
+
+alter table user_settings enable row level security;
+
+CREATE POLICY "owners can select" ON public.user_settings
+    AS PERMISSIVE FOR SELECT
+    TO public
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "owners can insert" ON public.user_settings
+    AS PERMISSIVE FOR INSERT
+    TO public
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "owners can update" ON public.user_settings
+    AS PERMISSIVE FOR UPDATE
+    TO public
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "owners can delete" ON public.user_settings
+    AS PERMISSIVE FOR DELETE
+    TO public
+    USING (auth.uid() = user_id);
