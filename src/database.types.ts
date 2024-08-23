@@ -61,18 +61,15 @@ export type Database = {
         Row: {
           id: string
           user_id: string
-          settings_name: string
           allocation_settings: string[]
           created_at: string
           updated_at: string
         };
         Insert: {
           user_id: string
-          settings_name: string
           allocation_settings?: string[];
         };
         Update: {
-          settings_name?: string
           allocation_settings?: string[];
         };
       }

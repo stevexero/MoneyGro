@@ -26,7 +26,6 @@ WITH CHECK (auth.uid() = user_id);
 create table user_settings (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id uuid REFERENCES auth.users (id) not null,
-    settings_name text not null,
     allocation_settings text[] DEFAULT '{}',
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now()
