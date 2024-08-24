@@ -4,12 +4,25 @@ import useAuthStore from "./authStore";
 
 interface Allocation {
     name: string;
+    alloc_id: string;
+    alloc_freedom: number;
+    alloc_dreams: number;
+    alloc_generosity: number;
+    alloc_knowledge: number;
+    alloc_joy: number;
   }
 
 interface SettingsState {
     allocations: Allocation[];
     getAllocations: () => void;
-    addAllocation: (allocationName: string) => void;
+    addAllocation: (
+        name: string,
+        alloc_id: string,
+        alloc_freedom: number,
+        alloc_dreams: number,
+        alloc_generosity: number,
+        alloc_knowledge: number,
+        alloc_joy: number) => void;
     clearAllocations: () => void;
 }
 
@@ -19,8 +32,6 @@ const useSettingsStore = create<SettingsState>((set) => ({
     getAllocations: async () => {
         const { profile } = useAuthStore.getState();
         if (profile) {
-            console.log(`Fetching allocation settings for user: ${profile.user_id}`);
-            
             if (profile?.user_id) {
                 const { data } = await supaClient
                     .from('user_settings')
@@ -28,9 +39,20 @@ const useSettingsStore = create<SettingsState>((set) => ({
                     .eq('user_id', profile.user_id)
                     .single();
 
-                if (data) {
-                    const allocationNames = data.allocation_settings || [];
-                    const allocations = allocationNames.map((name: string) => ({ name }));
+                    if (data) {
+                        const allocationNames = data.allocation_settings || [];
+                        const allocations = allocationNames.map((jsonString: string) => {
+                        const allocation = JSON.parse(jsonString);
+                        return {
+                            name: allocation.name,
+                            alloc_id: allocation.alloc_id,
+                            alloc_freedom: allocation.alloc_freedom,
+                            alloc_dreams: allocation.alloc_dreams,
+                            alloc_generosity: allocation.alloc_generosity,
+                            alloc_knowledge: allocation.alloc_knowledge,
+                            alloc_joy: allocation.alloc_joy,
+                            };
+                        });
                     set({ allocations });
                 }
             }
@@ -39,10 +61,26 @@ const useSettingsStore = create<SettingsState>((set) => ({
         }
     },
 
-    addAllocation: async (allocationName) => {
+    addAllocation: async (
+        name: string,
+        alloc_id: string,
+        alloc_freedom: number,
+        alloc_dreams: number,
+        alloc_generosity: number,
+        alloc_knowledge: number,
+        alloc_joy: number
+    ) => {
         const { session } = useAuthStore.getState();
         if (session?.user.id) {
-            const newAllocation = { name: allocationName };
+            const newAllocation = {
+                name,
+                alloc_id,
+                alloc_freedom,
+                alloc_dreams,
+                alloc_generosity,
+                alloc_knowledge,
+                alloc_joy,
+            };
 
             set((state) => ({
                 allocations: [...state.allocations, newAllocation]
@@ -50,7 +88,9 @@ const useSettingsStore = create<SettingsState>((set) => ({
 
             const { allocations } = useSettingsStore.getState();
 
-            const allocationNames = allocations.map((allocation) => allocation.name);
+            const allocationNames = allocations.map((allocation) =>
+                JSON.stringify(allocation)
+            );
 
             const { error } = await supaClient
                 .from('user_settings')

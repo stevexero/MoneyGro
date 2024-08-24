@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 interface InputsState {
   initialAmount: string | number;
-
   setinitialAmount: (amt: string | number) => void;
 }
 

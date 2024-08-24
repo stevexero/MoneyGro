@@ -12,6 +12,7 @@ import useModalStore from '../../stores/modalStore';
 import useJarStore from '../../stores/jarStore';
 import useDeductionStore from '../../stores/deductionStore';
 import useThemeStore from '../../stores/themeStore';
+import useSelectStore from '../../stores/selectStore';
 
 interface SettingsProps {
   modalTitle: string;
@@ -36,6 +37,7 @@ const Settings: React.FC<SettingsProps> = ({
   const updateDeduction = useDeductionStore((state) => state.updateDeduction);
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
+  const selectName = useSelectStore((state) => state.selectName);
 
   const [usernameText, setUsernameText] = useState('');
   const [settingsText, setSettingsText] = useState('');
@@ -102,7 +104,15 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   const updateUserProfile = async () => {
-    addAllocation(settingsText);
+    addAllocation(
+      settingsText,
+      settingsText.split(' ').join('-').toLowerCase(),
+      jarInputs.freedom,
+      jarInputs.dreams,
+      jarInputs.generosity,
+      jarInputs.knowledge,
+      jarInputs.joy
+    );
     closeModal();
   };
 
@@ -114,7 +124,15 @@ const Settings: React.FC<SettingsProps> = ({
         allocation_settings: [],
       });
 
-    addAllocation(allocationName);
+    addAllocation(
+      allocationName,
+      allocationName.split(' ').join('-').toLowerCase(),
+      jarInputs.freedom,
+      jarInputs.dreams,
+      jarInputs.generosity,
+      jarInputs.knowledge,
+      jarInputs.joy
+    );
 
     if (insertError) {
       setSettingsServerError(
@@ -406,6 +424,9 @@ const Settings: React.FC<SettingsProps> = ({
             }
           }}
           className='input input-md input-bordered border-2 input-primary w-full max-w-lg rounded-full mt-4'
+          disabled={
+            !isNewUser && selectName !== 'add-a-new-distribution-profile'
+          } // Disable if it's not a new user and add a new distribution is not selected
         ></input>
         {settingsFormIsDirty &&
           (invalidSettingsString || settingsServerError) && (
