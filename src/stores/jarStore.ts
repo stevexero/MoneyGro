@@ -9,8 +9,8 @@ interface JarInputs {
   }
   
   interface CustomJar {
-    value: number;
     name: string;
+    value: number;
   }
 
   interface JarState {
@@ -27,6 +27,7 @@ interface JarInputs {
     renameCustomJar: (newName: string, index: number) => void;
     removeCustomJar: (index: number) => void;
     setNecessities: (amt: number) => void;
+    setCustomJars: (customAllocations: CustomJar[]) => void;
   }
 
   const useJarStore = create<JarState>((set) => ({
@@ -61,10 +62,14 @@ interface JarInputs {
     });
   },
 
+  setCustomJars: (customAllocations: CustomJar[]) => {
+    set({ customJars: customAllocations });
+  },
+
   // Custom Jars
   addCustomJar: () =>
     set((state) => ({
-      customJars: [...state.customJars, { value: 0, name: 'Custom Jar' }],
+      customJars: [...state.customJars, { name: 'Custom Jar', value: 0 }],
     })),
 
   updateCustomJar: (index, name, value) => {
@@ -109,5 +114,5 @@ interface JarInputs {
 
     setNecessities: (amt) => set({ necessities: amt }),
   }))
-  
+
     export default useJarStore;

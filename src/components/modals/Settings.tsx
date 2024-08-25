@@ -1,4 +1,4 @@
-import { ReactNode, useState, useMemo } from 'react';
+import { ReactNode, useState, useMemo, useEffect } from 'react';
 import { supaClient } from '../../supabaseClient';
 import {
   validateDecimal,
@@ -33,11 +33,13 @@ const Settings: React.FC<SettingsProps> = ({
   const setJarInputs = useJarStore((state) => state.setJarInputs);
   const customJars = useJarStore((state) => state.customJars);
   const updateCustomJar = useJarStore((state) => state.updateCustomJar);
+  const setCustomJars = useJarStore((state) => state.setCustomJars);
   const deductions = useDeductionStore((state) => state.deductions);
   const updateDeduction = useDeductionStore((state) => state.updateDeduction);
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
   const selectName = useSelectStore((state) => state.selectName);
+  const allocations = useSettingsStore((state) => state.allocations);
 
   const [usernameText, setUsernameText] = useState('');
   const [settingsText, setSettingsText] = useState('');
@@ -104,6 +106,11 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   const updateUserProfile = async () => {
+    const customAllocations = customJars.map((jar) => ({
+      name: jar.name,
+      alloc_custom: jar.value,
+    }));
+
     addAllocation(
       settingsText,
       settingsText.split(' ').join('-').toLowerCase(),
@@ -111,7 +118,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.dreams,
       jarInputs.generosity,
       jarInputs.knowledge,
-      jarInputs.joy
+      jarInputs.joy,
+      customAllocations
     );
     closeModal();
   };
@@ -124,6 +132,11 @@ const Settings: React.FC<SettingsProps> = ({
         allocation_settings: [],
       });
 
+    const customAllocations = customJars.map((jar) => ({
+      name: jar.name,
+      alloc_custom: jar.value,
+    }));
+
     addAllocation(
       allocationName,
       allocationName.split(' ').join('-').toLowerCase(),
@@ -131,7 +144,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.dreams,
       jarInputs.generosity,
       jarInputs.knowledge,
-      jarInputs.joy
+      jarInputs.joy,
+      customAllocations
     );
 
     if (insertError) {
@@ -183,6 +197,28 @@ const Settings: React.FC<SettingsProps> = ({
     signOut();
     closeModal();
   };
+
+  useEffect(() => {
+    if (selectName) {
+      const selectedAllocation = allocations.find(
+        (alloc) => alloc.alloc_id === selectName
+      );
+      if (selectedAllocation) {
+        setJarInputs('freedom', selectedAllocation.alloc_freedom);
+        setJarInputs('dreams', selectedAllocation.alloc_dreams);
+        setJarInputs('generosity', selectedAllocation.alloc_generosity);
+        setJarInputs('knowledge', selectedAllocation.alloc_knowledge);
+        setJarInputs('joy', selectedAllocation.alloc_joy);
+        const mappedCustomJars = selectedAllocation.custom_allocations.map(
+          (customAlloc) => ({
+            name: customAlloc.name,
+            value: customAlloc.alloc_custom,
+          })
+        );
+        setCustomJars(mappedCustomJars);
+      }
+    }
+  }, [selectName, allocations, setJarInputs, setCustomJars]);
 
   return (
     <>
