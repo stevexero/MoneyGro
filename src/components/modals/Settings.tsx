@@ -232,17 +232,29 @@ const Settings: React.FC<SettingsProps> = ({
         );
         setCustomJars(mappedCustomJars);
 
-        const mappedDeductions = selectedAllocation.alloc_deductions.map(
-          (deduction) => ({
-            name: deduction.name,
-            type: deduction.type,
-            value: deduction.value,
-          })
-        );
-        setDeductions(mappedDeductions);
+        if (
+          deductions.length === 0 ||
+          selectedAllocation.alloc_id !== selectName
+        ) {
+          const mappedDeductions = selectedAllocation.alloc_deductions.map(
+            (deduction) => ({
+              name: deduction.name,
+              type: deduction.type,
+              value: deduction.value,
+            })
+          );
+          setDeductions(mappedDeductions);
+        }
       }
     }
-  }, [selectName, allocations, setJarInputs, setCustomJars, setDeductions]);
+  }, [
+    selectName,
+    allocations,
+    setJarInputs,
+    setCustomJars,
+    setDeductions,
+    deductions.length,
+  ]);
 
   return (
     <>
