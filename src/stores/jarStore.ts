@@ -66,7 +66,6 @@ interface JarInputs {
     set({ customJars: customAllocations });
   },
 
-  // Custom Jars
   addCustomJar: () =>
     set((state) => ({
       customJars: [...state.customJars, { name: 'Custom Jar', value: 0 }],
@@ -115,4 +114,4 @@ interface JarInputs {
     setNecessities: (amt) => set({ necessities: amt }),
   }))
 
-    export default useJarStore;
+export default useJarStore;

@@ -1,13 +1,13 @@
 import {create} from 'zustand';
 
 interface Deduction {
-    value: string | number;
-    type: 'fixed' | 'percentage';
-    name: string;
+  value: string | number;
+  type: 'fixed' | 'percentage';
+  name: string;
   }
 
-  interface DeductionState {
-    deductions: Deduction[];
+interface DeductionState {
+  deductions: Deduction[];
   totalDeductions: number;
   deductionsHidden: boolean;
   isDeductionsRenameModalOpen: boolean;
@@ -33,6 +33,7 @@ interface Deduction {
   setCurrentDeductionIndex: (index: number) => void;
   setNewDeductionName: (newName: string) => void;
   setDistributableAmount: (amt: number) => void;
+  setDeductions: (deducts: Deduction[]) => void;
   }
 
 const useDeductionStore = create<DeductionState>((set) => ({
@@ -51,6 +52,10 @@ const useDeductionStore = create<DeductionState>((set) => ({
         { value: '', type: 'fixed', name: 'Deduction' },
       ],
     })),
+
+  setDeductions: (deducts: Deduction[]) => {
+    set({ deductions: deducts });
+  },
 
   updateDeduction: (index, name, value) => {
     const newValue = typeof value === 'string' ? parseFloat(value) : value;

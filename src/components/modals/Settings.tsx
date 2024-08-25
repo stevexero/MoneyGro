@@ -36,6 +36,7 @@ const Settings: React.FC<SettingsProps> = ({
   const setCustomJars = useJarStore((state) => state.setCustomJars);
   const deductions = useDeductionStore((state) => state.deductions);
   const updateDeduction = useDeductionStore((state) => state.updateDeduction);
+  const setDeductions = useDeductionStore((state) => state.setDeductions);
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
   const selectName = useSelectStore((state) => state.selectName);
@@ -111,6 +112,12 @@ const Settings: React.FC<SettingsProps> = ({
       alloc_custom: jar.value,
     }));
 
+    const deducts = deductions.map((deduction) => ({
+      name: deduction.name,
+      type: deduction.type,
+      value: deduction.value,
+    }));
+
     addAllocation(
       settingsText,
       settingsText.split(' ').join('-').toLowerCase(),
@@ -119,7 +126,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.generosity,
       jarInputs.knowledge,
       jarInputs.joy,
-      customAllocations
+      customAllocations,
+      deducts
     );
     closeModal();
   };
@@ -137,6 +145,12 @@ const Settings: React.FC<SettingsProps> = ({
       alloc_custom: jar.value,
     }));
 
+    const deducts = deductions.map((deduction) => ({
+      name: deduction.name,
+      type: deduction.type,
+      value: deduction.value,
+    }));
+
     addAllocation(
       allocationName,
       allocationName.split(' ').join('-').toLowerCase(),
@@ -145,7 +159,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.generosity,
       jarInputs.knowledge,
       jarInputs.joy,
-      customAllocations
+      customAllocations,
+      deducts
     );
 
     if (insertError) {
@@ -216,9 +231,18 @@ const Settings: React.FC<SettingsProps> = ({
           })
         );
         setCustomJars(mappedCustomJars);
+
+        const mappedDeductions = selectedAllocation.alloc_deductions.map(
+          (deduction) => ({
+            name: deduction.name,
+            type: deduction.type,
+            value: deduction.value,
+          })
+        );
+        setDeductions(mappedDeductions);
       }
     }
-  }, [selectName, allocations, setJarInputs, setCustomJars]);
+  }, [selectName, allocations, setJarInputs, setCustomJars, setDeductions]);
 
   return (
     <>

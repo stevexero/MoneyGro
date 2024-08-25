@@ -32,14 +32,13 @@ const ItemizedDeductions: React.FC = () => {
               </div>
               <ul>
                 {deductions.map((deduction, index) => {
-                  const initialAmt =
-                    typeof initialAmount === 'number'
-                      ? initialAmount
-                      : parseFloat(initialAmount);
-                  const deductionValue =
-                    typeof deduction.value === 'number'
-                      ? deduction.value
-                      : parseFloat(deduction.value || '0');
+                  const initialAmt = Number.isNaN(Number(initialAmount))
+                    ? 0
+                    : Number(initialAmount);
+
+                  const deductionValue = Number.isNaN(Number(deduction.value))
+                    ? 0
+                    : Number(deduction.value);
 
                   const deductionAmount =
                     deduction.type === 'percentage'

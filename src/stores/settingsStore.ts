@@ -2,10 +2,17 @@ import { create } from "zustand";
 import { supaClient } from "../supabaseClient";
 import useAuthStore from "./authStore";
 import useJarStore from "./jarStore";
+import useDeductionStore from "./deductionStore";
 
 interface CustomAllocation {
     name: string;
     alloc_custom: number;
+}
+
+interface Deduction {
+    value: string | number;
+    type: 'fixed' | 'percentage';
+    name: string;
 }
 
 interface Allocation {
@@ -17,6 +24,7 @@ interface Allocation {
     alloc_knowledge: number;
     alloc_joy: number;
     custom_allocations: CustomAllocation[];
+    alloc_deductions: Deduction[];
   }
 
 interface SettingsState {
@@ -30,7 +38,8 @@ interface SettingsState {
         alloc_generosity: number,
         alloc_knowledge: number,
         alloc_joy: number,
-        custom_allocations: CustomAllocation[]) => void;
+        custom_allocations: CustomAllocation[],
+        alloc_deductions: Deduction[]) => void;
     clearAllocations: () => void;
 }
 
@@ -40,6 +49,7 @@ const useSettingsStore = create<SettingsState>((set) => ({
     getAllocations: async () => {
         const { profile } = useAuthStore.getState();
         const { setCustomJars } = useJarStore.getState();
+        const { setDeductions } = useDeductionStore.getState();
 
         if (profile) {
             if (profile?.user_id) {
@@ -61,7 +71,8 @@ const useSettingsStore = create<SettingsState>((set) => ({
                             alloc_generosity: allocation.alloc_generosity,
                             alloc_knowledge: allocation.alloc_knowledge,
                             alloc_joy: allocation.alloc_joy,
-                            custom_allocations: allocation.custom_allocations || []
+                            custom_allocations: allocation.custom_allocations || [],
+                            alloc_deductions: allocation.alloc_deductions || []
                             };
                         });
                     set({ allocations });
@@ -79,6 +90,15 @@ const useSettingsStore = create<SettingsState>((set) => ({
                                 })
                             );
                             setCustomJars(customJars);
+
+                            const deductions = selectedAllocation.alloc_deductions.map(
+                                (deduction: Deduction) => ({
+                                    value: deduction.value,
+                                    type: deduction.type,
+                                    name: deduction.name,
+                                })
+                            );
+                            setDeductions(deductions);
                         }
                     }
                 }
@@ -96,7 +116,10 @@ const useSettingsStore = create<SettingsState>((set) => ({
         alloc_generosity: number,
         alloc_knowledge: number,
         alloc_joy: number,
-        custom_allocations: CustomAllocation[]
+        // customAllocations,
+        // deducts,
+        custom_allocations: CustomAllocation[],
+        alloc_deductions: Deduction[]
     ) => {
         const { session } = useAuthStore.getState();
         if (session?.user.id) {
@@ -108,7 +131,8 @@ const useSettingsStore = create<SettingsState>((set) => ({
                 alloc_generosity,
                 alloc_knowledge,
                 alloc_joy,
-                custom_allocations
+                custom_allocations,
+                alloc_deductions
             };
 
             set((state) => ({
