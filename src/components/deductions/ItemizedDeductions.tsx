@@ -61,13 +61,19 @@ const ItemizedDeductions: React.FC = () => {
               <p className='mt-4 font-semibold'>
                 Total Deductions: <span className='font-light'>$</span>
                 <span className='font-normal text-secondary'>
-                  {totalDeductions.toFixed(2)}
+                  {isNaN(Number(totalDeductions))
+                    ? '0.00'
+                    : totalDeductions.toFixed(2)}
+                  {/* {totalDeductions.toFixed(2)} */}
                 </span>
               </p>
               <p className='mt-4 font-semibold'>
                 Distributable Amount: <span className='font-light'>$</span>
                 <span className='font-normal text-secondary'>
-                  {distributableAmount.toFixed(2)}
+                  {isNaN(Number(distributableAmount))
+                    ? '0.00'
+                    : distributableAmount.toFixed(2)}
+                  {/* {distributableAmount.toFixed(2)} */}
                 </span>
               </p>
             </div>
