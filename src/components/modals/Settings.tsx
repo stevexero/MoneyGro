@@ -127,7 +127,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.knowledge,
       jarInputs.joy,
       customAllocations,
-      deducts
+      deducts,
+      theme
     );
     closeModal();
   };
@@ -160,7 +161,8 @@ const Settings: React.FC<SettingsProps> = ({
       jarInputs.knowledge,
       jarInputs.joy,
       customAllocations,
-      deducts
+      deducts,
+      theme
     );
 
     if (insertError) {
@@ -245,6 +247,7 @@ const Settings: React.FC<SettingsProps> = ({
           );
           setDeductions(mappedDeductions);
         }
+        setTheme(selectedAllocation.alloc_theme);
       }
     }
   }, [
@@ -254,6 +257,7 @@ const Settings: React.FC<SettingsProps> = ({
     setCustomJars,
     setDeductions,
     deductions.length,
+    setTheme,
   ]);
 
   return (
@@ -296,7 +300,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <input
                 type='number'
-                className='input input-sm input-primary rounded-lg text-right'
+                className='input input-sm input-primary rounded-lg w-16 text-right'
                 name='freedom'
                 id='freedom'
                 value={jarInputs.freedom === 0 ? '' : jarInputs.freedom}
@@ -316,7 +320,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <input
                 type='number'
-                className='input input-sm input-primary rounded-lg text-right'
+                className='input input-sm input-primary rounded-lg w-16 text-right'
                 name='dreams'
                 id='dreams'
                 value={jarInputs.dreams === 0 ? '' : jarInputs.dreams}
@@ -336,7 +340,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <input
                 type='number'
-                className='input input-sm input-primary rounded-lg text-right'
+                className='input input-sm input-primary rounded-lg w-16 text-right'
                 name='generosity'
                 id='generosity'
                 value={jarInputs.generosity === 0 ? '' : jarInputs.generosity}
@@ -356,7 +360,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <input
                 type='number'
-                className='input input-sm input-primary rounded-lg text-right'
+                className='input input-sm input-primary rounded-lg w-16 text-right'
                 name='knowledge'
                 id='knowledge'
                 value={jarInputs.knowledge === 0 ? '' : jarInputs.knowledge}
@@ -376,7 +380,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div>
               <input
                 type='number'
-                className='input input-sm input-primary rounded-lg text-right'
+                className='input input-sm input-primary rounded-lg w-16 text-right'
                 name='joy'
                 id='joy'
                 value={jarInputs.joy === 0 ? '' : jarInputs.joy}
@@ -410,7 +414,7 @@ const Settings: React.FC<SettingsProps> = ({
               <div>
                 <input
                   type='number'
-                  className='input input-sm input-primary rounded-lg text-right'
+                  className='input input-sm input-primary rounded-lg w-16 text-right'
                   name='value'
                   value={jar.value === 0 ? '' : jar.value}
                   onChange={(event) => handleCustomJarChange(event, index)}
@@ -444,7 +448,7 @@ const Settings: React.FC<SettingsProps> = ({
               <div>
                 <input
                   type='number'
-                  className='input input-sm input-primary rounded-lg text-right'
+                  className='input input-sm input-primary rounded-lg w-16 text-right'
                   name='value'
                   value={deduction.value === 0 ? '' : deduction.value}
                   onChange={(event) => handleDeductionChange(event, index)}

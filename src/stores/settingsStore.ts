@@ -25,6 +25,7 @@ interface Allocation {
     alloc_joy: number;
     custom_allocations: CustomAllocation[];
     alloc_deductions: Deduction[];
+    alloc_theme: string;
   }
 
 interface SettingsState {
@@ -39,7 +40,8 @@ interface SettingsState {
         alloc_knowledge: number,
         alloc_joy: number,
         custom_allocations: CustomAllocation[],
-        alloc_deductions: Deduction[]) => void;
+        alloc_deductions: Deduction[],
+        alloc_theme: string) => void
     clearAllocations: () => void;
 }
 
@@ -72,7 +74,8 @@ const useSettingsStore = create<SettingsState>((set) => ({
                             alloc_knowledge: allocation.alloc_knowledge,
                             alloc_joy: allocation.alloc_joy,
                             custom_allocations: allocation.custom_allocations || [],
-                            alloc_deductions: allocation.alloc_deductions || []
+                            alloc_deductions: allocation.alloc_deductions || [],
+                            alloc_theme: allocation.alloc_theme || 'light'
                             };
                         });
                     set({ allocations });
@@ -119,7 +122,8 @@ const useSettingsStore = create<SettingsState>((set) => ({
         // customAllocations,
         // deducts,
         custom_allocations: CustomAllocation[],
-        alloc_deductions: Deduction[]
+        alloc_deductions: Deduction[],
+        alloc_theme: string
     ) => {
         const { session } = useAuthStore.getState();
         if (session?.user.id) {
@@ -132,7 +136,8 @@ const useSettingsStore = create<SettingsState>((set) => ({
                 alloc_knowledge,
                 alloc_joy,
                 custom_allocations,
-                alloc_deductions
+                alloc_deductions,
+                alloc_theme
             };
 
             set((state) => ({
