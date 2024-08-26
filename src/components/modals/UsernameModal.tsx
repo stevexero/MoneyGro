@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useAuthStore from '../../stores/authStore';
-import Settings from './Settings';
+import Settings from './settings/Settings';
 
 const UsernameModal = () => {
   const getUserProfile = useAuthStore((state) => state.getUserProfile);

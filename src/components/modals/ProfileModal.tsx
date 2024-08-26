@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useAuthStore from '../../stores/authStore';
 import useSettingsStore from '../../stores/settingsStore';
-import Settings from './Settings';
+import Settings from './settings/Settings';
 import useSelectStore from '../../stores/selectStore';
 import useJarStore from '../../stores/jarStore';
 

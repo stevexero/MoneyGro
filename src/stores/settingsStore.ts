@@ -29,6 +29,8 @@ interface Allocation {
   }
 
 interface SettingsState {
+    settingsName: string;
+    usernameText: string;
     allocations: Allocation[];
     getAllocations: () => void;
     addAllocation: (
@@ -41,12 +43,21 @@ interface SettingsState {
         alloc_joy: number,
         custom_allocations: CustomAllocation[],
         alloc_deductions: Deduction[],
-        alloc_theme: string) => void
+        alloc_theme: string
+    ) => void
     clearAllocations: () => void;
+    setSettingsName: (name: string) => void;
+    setUsernameText: (name: string) => void;
 }
 
 const useSettingsStore = create<SettingsState>((set) => ({
+    settingsName: '',
+    usernameText: '',
     allocations: [],
+
+    setSettingsName: (name) => set({ settingsName: name }),
+
+    setUsernameText: (name) => set({ usernameText: name}),
 
     getAllocations: async () => {
         const { profile } = useAuthStore.getState();
