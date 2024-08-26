@@ -70,7 +70,10 @@ const Navbar: React.FC = () => {
         </div>
         <div className='flex-1'>
           <Link to='/' className='text-xl'>
-            &nbsp;Money<span className='text-secondary'>Gro</span>.
+            &nbsp;Money
+            <span className='text-secondary'>
+              G<span className='text-primary'>.</span>ro
+            </span>
           </Link>
         </div>
         <div className='flex-none'>
