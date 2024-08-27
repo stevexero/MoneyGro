@@ -25,9 +25,7 @@ const CustomJarCard: React.FC<CustomJarCardProps> = ({
 }) => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const totalDeductions = useDeductionStore((state) => state.totalDeductions);
-  const customJars = useJarStore((state) => state.customJars);
-  const renameCustomJar = useJarStore((state) => state.renameCustomJar);
-  const removeCustomJar = useJarStore((state) => state.removeCustomJar);
+  const { customJars, renameCustomJar, removeCustomJar } = useJarStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomJarIndex, setCurrentCustomJarIndex] = useState<

@@ -4,14 +4,12 @@ import useDeductionStore from '../../stores/deductionStore';
 
 const ItemizedDeductions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const deductions = useDeductionStore((state) => state.deductions);
-  const toggleDeductionsHidden = useDeductionStore(
-    (state) => state.toggleDeductionsHidden
-  );
-  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
-  const distributableAmount = useDeductionStore(
-    (state) => state.distributableAmount
-  );
+  const {
+    deductions,
+    toggleDeductionsHidden,
+    totalDeductions,
+    distributableAmount,
+  } = useDeductionStore();
 
   return (
     <>

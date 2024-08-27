@@ -9,28 +9,18 @@ import useDeductionStore from '../../stores/deductionStore';
 
 const DeductionsCard: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const deductions = useDeductionStore((state) => state.deductions);
-  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
-  const setTotalDeductions = useDeductionStore(
-    (state) => state.setTotalDeductions
-  );
-  const updateDeduction = useDeductionStore((state) => state.updateDeduction);
-  const toggleDeductionType = useDeductionStore(
-    (state) => state.toggleDeductionType
-  );
-  const removeDeduction = useDeductionStore((state) => state.removeDeduction);
-  const setCurrentDeductionIndex = useDeductionStore(
-    (state) => state.setCurrentDeductionIndex
-  );
-  const setDistributableAmount = useDeductionStore(
-    (state) => state.setDistributableAmount
-  );
-  const setIsDeductionsRenameModalOpen = useDeductionStore(
-    (state) => state.setIsDeductionsRenameModalOpen
-  );
-  const setNewDeductionName = useDeductionStore(
-    (state) => state.setNewDeductionName
-  );
+  const {
+    deductions,
+    totalDeductions,
+    setTotalDeductions,
+    updateDeduction,
+    toggleDeductionType,
+    removeDeduction,
+    setCurrentDeductionIndex,
+    setDistributableAmount,
+    setIsDeductionsRenameModalOpen,
+    setNewDeductionName,
+  } = useDeductionStore();
 
   const [isDisabled, setIsDisabled] = useState(true);
 

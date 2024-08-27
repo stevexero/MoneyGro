@@ -4,15 +4,9 @@ import useInputsStore from '../stores/initialAmountStore';
 import useDeductionStore from '../stores/deductionStore';
 
 const AnimatedInput: React.FC = () => {
-  const initialAmount = useInputsStore((state) => state.initialAmount);
-  const setinitialAmount = useInputsStore((state) => state.setinitialAmount);
-  const removeAllDeductions = useDeductionStore(
-    (state) => state.removeAllDeductions
-  );
-  const deductionsHidden = useDeductionStore((state) => state.deductionsHidden);
-  const toggleDeductionsHidden = useDeductionStore(
-    (state) => state.toggleDeductionsHidden
-  );
+  const { initialAmount, setinitialAmount } = useInputsStore();
+  const { removeAllDeductions, deductionsHidden, toggleDeductionsHidden } =
+    useDeductionStore();
 
   const [displayedText, setDisplayedText] = useState<string>('');
   const [isDeleting, setIsDeleting] = useState<boolean>(false);

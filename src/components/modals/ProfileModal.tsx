@@ -4,15 +4,16 @@ import useSettingsStore from '../../stores/settingsStore';
 import Settings from './settings/Settings';
 import useSelectStore from '../../stores/selectStore';
 import useJarStore from '../../stores/jarStore';
+import useDeductionStore from '../../stores/deductionStore';
+import useThemeStore from '../../stores/themeStore';
 
 const ProfileModal = () => {
-  const profile = useAuthStore((state) => state.profile);
-  const getUserProfile = useAuthStore((state) => state.getUserProfile);
-  const allocations = useSettingsStore((state) => state.allocations);
-  const getAllocations = useSettingsStore((state) => state.getAllocations);
-  const clearAllocations = useSettingsStore((state) => state.clearAllocations);
-  const setSelectName = useSelectStore((state) => state.setSelectName);
-  const setJarInputs = useJarStore((state) => state.setJarInputs);
+  const { profile, getUserProfile } = useAuthStore();
+  const { allocations, getAllocations, clearAllocations } = useSettingsStore();
+  const { setJarInputs, setCustomJars } = useJarStore();
+  const { deductions, setDeductions } = useDeductionStore();
+  const setTheme = useThemeStore((state) => state.setTheme);
+  const { selectName, setSelectName } = useSelectStore();
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = e.target.value.split(' ').join('-').toLowerCase();
@@ -26,6 +27,21 @@ const ProfileModal = () => {
       setJarInputs('generosity', allocs.alloc_generosity);
       setJarInputs('knowledge', allocs.alloc_knowledge);
       setJarInputs('joy', allocs.alloc_joy);
+      const mappedCustomJars = allocs.custom_allocations.map((customAlloc) => ({
+        name: customAlloc.name,
+        value: customAlloc.alloc_custom,
+      }));
+      setCustomJars(mappedCustomJars);
+
+      if (deductions.length === 0 || allocs.alloc_id !== selectName) {
+        const mappedDeductions = allocs.alloc_deductions.map((deduction) => ({
+          name: deduction.name,
+          type: deduction.type,
+          value: deduction.value,
+        }));
+        setDeductions(mappedDeductions);
+      }
+      setTheme(allocs.alloc_theme);
     }
   };
 
@@ -55,12 +71,19 @@ const ProfileModal = () => {
               <select
                 className='select select-md select-primary w-full rounded-full mt-4'
                 onChange={handleSelect}
+                value={selectName || 'select-a-saved-distribution'}
               >
-                <option>Select a Saved Distribution</option>
+                <option value='select-a-saved-distribution' disabled>
+                  Select a Saved Distribution
+                </option>
                 {allocations.map((allocation, index) => (
-                  <option key={index}>{allocation.name}</option>
+                  <option key={index} value={allocation.alloc_id}>
+                    {allocation.name}
+                  </option>
                 ))}
-                <option>Add a New Distribution Profile</option>
+                <option value='add-a-new-distribution-profile'>
+                  Add a New Distribution Profile
+                </option>
               </select>
             </>
           }

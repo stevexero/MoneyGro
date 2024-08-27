@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import useJarStore from '../stores/jarStore';
 
 const Presets: React.FC = () => {
-  const jarInputs = useJarStore((state) => state.jarInputs);
-  const setJarInputs = useJarStore((state) => state.setJarInputs);
+  const { jarInputs, setJarInputs } = useJarStore();
 
   const [optionsDisabled, setOptionsDisabled] = useState(true);
   const [category, setCategory] = useState('default');

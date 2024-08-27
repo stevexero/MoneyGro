@@ -7,6 +7,7 @@ import useDeductionStore from '../../stores/deductionStore';
 
 const Deductions: React.FC = () => {
   const deductionsHidden = useDeductionStore((state) => state.deductionsHidden);
+
   return (
     <>
       {deductionsHidden ? (

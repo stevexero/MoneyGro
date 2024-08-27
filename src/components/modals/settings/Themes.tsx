@@ -1,8 +1,7 @@
 import useThemeStore from '../../../stores/themeStore';
 
 const Themes = () => {
-  const theme = useThemeStore((state) => state.theme);
-  const setTheme = useThemeStore((state) => state.setTheme);
+  const { theme, setTheme } = useThemeStore();
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTheme(event.target.value);

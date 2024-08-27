@@ -10,12 +10,9 @@ interface SettingsSubheadingProps {
 const SettingsSubheading: React.FC<SettingsSubheadingProps> = ({
   isNewUser,
 }) => {
-  const setUsernameText = useSettingsStore((state) => state.setUsernameText);
-  const formError = useFormErrorStore((state) => state.formError);
-  const setFormError = useFormErrorStore((state) => state.setFormError);
-  const formIsDirty = useFormErrorStore((state) => state.formIsDirty);
-  const setFormIsDirty = useFormErrorStore((state) => state.setFormIsDirty);
-  const usernameText = useSettingsStore((state) => state.usernameText);
+  const { formError, setFormError, formIsDirty, setFormIsDirty } =
+    useFormErrorStore();
+  const { usernameText, setUsernameText } = useSettingsStore();
 
   const invalidString = useMemo(
     () => validateUsername(usernameText),

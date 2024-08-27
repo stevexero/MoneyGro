@@ -4,8 +4,7 @@ import useJarStore from '../stores/jarStore';
 
 const TotalDistributions: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
-  const jarInputs = useJarStore((state) => state.jarInputs);
-  const customJars = useJarStore((state) => state.customJars);
+  const { jarInputs, customJars } = useJarStore();
   const totalDeductions = useDeductionStore((state) => state.totalDeductions);
 
   const totalPercentage =

@@ -9,11 +9,9 @@ interface SettingsInputProps {
 }
 
 const SettingsInput: React.FC<SettingsInputProps> = ({ isNewUser }) => {
-  const settingsName = useSettingsStore((state) => state.settingsName);
-  const setSettingsName = useSettingsStore((state) => state.setSettingsName);
+  const { settingsName, setSettingsName } = useSettingsStore();
   const selectName = useSelectStore((state) => state.selectName);
-  const formError = useFormErrorStore((state) => state.formError);
-  const setFormError = useFormErrorStore((state) => state.setFormError);
+  const { formError, setFormError } = useFormErrorStore();
 
   const [settingsFormIsDirty, setSettingsFormIsDirty] = useState(false);
 

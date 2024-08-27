@@ -2,13 +2,8 @@ import { FaEye } from 'react-icons/fa';
 import useDeductionStore from '../../stores/deductionStore';
 
 const DeductionsSummary: React.FC = () => {
-  const totalDeductions = useDeductionStore((state) => state.totalDeductions);
-  const distributableAmount = useDeductionStore(
-    (state) => state.distributableAmount
-  );
-  const toggleDeductionsHidden = useDeductionStore(
-    (state) => state.toggleDeductionsHidden
-  );
+  const { totalDeductions, distributableAmount, toggleDeductionsHidden } =
+    useDeductionStore();
 
   return (
     <div className='card card-compact card-bordered border-primary border-2 rounded-xl mt-4 w-full max-w-md'>

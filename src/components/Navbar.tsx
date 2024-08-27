@@ -12,13 +12,9 @@ import SignInSaveButton from './navbar/SignInSaveButton';
 import useThemeStore from '../stores/themeStore';
 
 const Navbar: React.FC = () => {
-  const session = useAuthStore((state) => state.session);
-  const isUsernameSet = useAuthStore((state) => state.isUsernameSet);
-  const getUserProfile = useAuthStore((state) => state.getUserProfile);
-  const isModalOpen = useModalStore((state) => state.isModalOpen);
-  const openModal = useModalStore((state) => state.openModal);
-  const theme = useThemeStore((state) => state.theme);
-  const setTheme = useThemeStore((state) => state.setTheme);
+  const { session, isUsernameSet, getUserProfile } = useAuthStore();
+  const { isModalOpen, openModal } = useModalStore();
+  const { theme, setTheme } = useThemeStore();
 
   const handleThemeChange = () => {
     const newTheme = theme === 'light' ? 'synthwave' : 'light';

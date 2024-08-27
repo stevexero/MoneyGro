@@ -3,8 +3,7 @@ import { validatePercentage } from '../../../../utils/validation';
 import JarsDiv from './JarsDiv';
 
 const Jars: React.FC = () => {
-  const jarInputs = useJarStore((state) => state.jarInputs);
-  const setJarInputs = useJarStore((state) => state.setJarInputs);
+  const { jarInputs, setJarInputs } = useJarStore();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

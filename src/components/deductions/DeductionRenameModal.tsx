@@ -4,17 +4,13 @@ const DeductionRenameModal: React.FC = () => {
   const isDeductionsRenameModalOpen = useDeductionStore(
     (state) => state.isDeductionsRenameModalOpen
   );
-  const renameDeduction = useDeductionStore((state) => state.renameDeduction);
-  const setIsDeductionsRenameModalOpen = useDeductionStore(
-    (state) => state.setIsDeductionsRenameModalOpen
-  );
-  const currentDeductionIndex = useDeductionStore(
-    (state) => state.currentDeductionIndex
-  );
-  const newDeductionName = useDeductionStore((state) => state.newDeductionName);
-  const setNewDeductionName = useDeductionStore(
-    (state) => state.setNewDeductionName
-  );
+  const {
+    renameDeduction,
+    setIsDeductionsRenameModalOpen,
+    currentDeductionIndex,
+    newDeductionName,
+    setNewDeductionName,
+  } = useDeductionStore();
 
   const handleRenameDeduction = () => {
     if (currentDeductionIndex !== null && newDeductionName) {

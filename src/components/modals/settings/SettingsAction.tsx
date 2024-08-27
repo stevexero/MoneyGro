@@ -14,8 +14,7 @@ interface SettingsActionProps {
 const SettingsAction: React.FC<SettingsActionProps> = ({ isNewUser }) => {
   const signOut = useAuthStore((state) => state.signOut);
   const closeModal = useModalStore((state) => state.closeModal);
-  const settingsName = useSettingsStore((state) => state.settingsName);
-  const usernameText = useSettingsStore((state) => state.usernameText);
+  const { settingsName, usernameText } = useSettingsStore();
 
   const invalidString = useMemo(
     () => validateUsername(usernameText),

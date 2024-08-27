@@ -2,8 +2,7 @@ import useDeductionStore from '../../../stores/deductionStore';
 import { validateDecimal } from '../../../utils/validation';
 
 const Deductions = () => {
-  const deductions = useDeductionStore((state) => state.deductions);
-  const updateDeduction = useDeductionStore((state) => state.updateDeduction);
+  const { deductions, updateDeduction } = useDeductionStore();
 
   const handleDeductionChange = (
     event: React.ChangeEvent<HTMLInputElement>,

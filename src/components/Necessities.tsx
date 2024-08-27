@@ -6,10 +6,7 @@ import useDeductionStore from '../stores/deductionStore';
 const Necessities: React.FC = () => {
   const initialAmount = useInputsStore((state) => state.initialAmount);
   const totalDeductions = useDeductionStore((state) => state.totalDeductions);
-  const jarInputs = useJarStore((state) => state.jarInputs);
-  const customJars = useJarStore((state) => state.customJars);
-  const necessities = useJarStore((state) => state.necessities);
-  const setNecessities = useJarStore((state) => state.setNecessities);
+  const { jarInputs, customJars, necessities, setNecessities } = useJarStore();
 
   const initialAmt =
     typeof initialAmount === 'string'

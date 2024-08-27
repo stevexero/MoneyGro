@@ -4,9 +4,7 @@ import { validatePercentage } from '../../utils/validation';
 import useJarStore from '../../stores/jarStore';
 
 const CustomJars = () => {
-  const customJars = useJarStore((state) => state.customJars);
-  const addCustomJar = useJarStore((state) => state.addCustomJar);
-  const updateCustomJar = useJarStore((state) => state.updateCustomJar);
+  const { customJars, addCustomJar, updateCustomJar } = useJarStore();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,

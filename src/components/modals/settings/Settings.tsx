@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useEffect } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { supaClient } from '../../../supabaseClient';
 import {
   validateSettingsName,
@@ -10,7 +10,6 @@ import useModalStore from '../../../stores/modalStore';
 import useJarStore from '../../../stores/jarStore';
 import useDeductionStore from '../../../stores/deductionStore';
 import useThemeStore from '../../../stores/themeStore';
-import useSelectStore from '../../../stores/selectStore';
 import Jars from './jars/Jars';
 import CustomJars from './jars/CustomJars';
 import Deductions from './Deductions';
@@ -32,20 +31,11 @@ const Settings: React.FC<SettingsProps> = ({
   isNewUser,
 }) => {
   const session = useAuthStore((state) => state.session);
-  const addAllocation = useSettingsStore((state) => state.addAllocation);
+  const { addAllocation, settingsName, usernameText } = useSettingsStore();
   const closeModal = useModalStore((state) => state.closeModal);
-  const jarInputs = useJarStore((state) => state.jarInputs);
-  const setJarInputs = useJarStore((state) => state.setJarInputs);
-  const customJars = useJarStore((state) => state.customJars);
-  const setCustomJars = useJarStore((state) => state.setCustomJars);
+  const { jarInputs, customJars } = useJarStore();
   const deductions = useDeductionStore((state) => state.deductions);
-  const setDeductions = useDeductionStore((state) => state.setDeductions);
   const theme = useThemeStore((state) => state.theme);
-  const setTheme = useThemeStore((state) => state.setTheme);
-  const selectName = useSelectStore((state) => state.selectName);
-  const allocations = useSettingsStore((state) => state.allocations);
-  const settingsName = useSettingsStore((state) => state.settingsName);
-  const usernameText = useSettingsStore((state) => state.usernameText);
   const setFormError = useFormErrorStore((state) => state.setFormError);
 
   const invalidString = useMemo(
@@ -168,51 +158,6 @@ const Settings: React.FC<SettingsProps> = ({
       setFormError(`Allocation "${allocationName}" could not be added.`);
     }
   };
-
-  useEffect(() => {
-    if (selectName) {
-      const selectedAllocation = allocations.find(
-        (alloc) => alloc.alloc_id === selectName
-      );
-      if (selectedAllocation) {
-        setJarInputs('freedom', selectedAllocation.alloc_freedom);
-        setJarInputs('dreams', selectedAllocation.alloc_dreams);
-        setJarInputs('generosity', selectedAllocation.alloc_generosity);
-        setJarInputs('knowledge', selectedAllocation.alloc_knowledge);
-        setJarInputs('joy', selectedAllocation.alloc_joy);
-        const mappedCustomJars = selectedAllocation.custom_allocations.map(
-          (customAlloc) => ({
-            name: customAlloc.name,
-            value: customAlloc.alloc_custom,
-          })
-        );
-        setCustomJars(mappedCustomJars);
-
-        if (
-          deductions.length === 0 ||
-          selectedAllocation.alloc_id !== selectName
-        ) {
-          const mappedDeductions = selectedAllocation.alloc_deductions.map(
-            (deduction) => ({
-              name: deduction.name,
-              type: deduction.type,
-              value: deduction.value,
-            })
-          );
-          setDeductions(mappedDeductions);
-        }
-        setTheme(selectedAllocation.alloc_theme);
-      }
-    }
-  }, [
-    selectName,
-    allocations,
-    setJarInputs,
-    setCustomJars,
-    setDeductions,
-    deductions.length,
-    setTheme,
-  ]);
 
   return (
     <>
