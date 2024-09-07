@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Distributions from './pages/Distributions';
-import Register from './pages/Register';
-import RegisterView from './pages/RegisterView';
 import Layout from './components/Layout';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 const router = createBrowserRouter([
   {
@@ -15,9 +15,12 @@ const router = createBrowserRouter([
         element: <Distributions />,
       },
       {
-        path: 'register',
-        element: <Register />,
-        children: [{ path: ':id', element: <RegisterView /> }],
+        path: 'signup',
+        element: <SignUp />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
       },
     ],
   },
